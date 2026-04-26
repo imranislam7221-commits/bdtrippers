@@ -6,24 +6,40 @@
     <title>BD TRIPPER - Visa & Travel Services</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts for elevated typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">BD TRIPPER</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+    <nav class="navbar navbar-expand-lg custom-navbar sticky-top shadow-sm">
+        <div class="container d-flex justify-content-between">
+            <a class="navbar-brand brand-logo" href="index.php">
+                BD <span class="fw-light">TRIPPER</span>
+            </a>
+
+            <!-- Custom 3-dot Mobile Menu Button (Only shows on mobile) -->
+            <button class="navbar-toggler border-0 shadow-none px-2 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-ellipsis-vertical fs-2"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="services.php">Visa Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="solvency.php">Bank Solvency</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.php">Contact Us</a></li>
+
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link custom-link" href="index.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-link" href="services.php">Visa Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-link" href="solvency.php">Bank Solvency</a>
+                    </li>
+                    <li class="nav-item ms-lg-3 mt-3 mt-lg-0 w-100 w-lg-auto text-center">
+                        <a class="btn custom-btn-white rounded-pill px-4" href="contact.php">Contact Us</a>
+                    </li>
                 </ul>
             </div>
         </div>
