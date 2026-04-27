@@ -128,12 +128,55 @@ h1, h2, h3, h4, h5, h6, .display-4 {
     }
 }
 
-@media (min-width: 992px) {
-    .navbar-toggler {
-        display: none !important;
-    }
-    .navbar-collapse {
-        display: flex !important;
+/* WhatsApp Floating Button */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.whatsapp-float:hover {
+    background-color: #128c7e;
+    color: #FFF;
+    transform: scale(1.1);
+}
+
+.whatsapp-float i {
+    margin-top: 2px;
+}
+
+/* Pulse animation */
+.whatsapp-float {
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+@media (max-width: 991px) {
+    .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
     }
 }
 
