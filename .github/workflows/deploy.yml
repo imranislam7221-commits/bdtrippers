@@ -1,0 +1,50 @@
+name: Deploy PHP to Static HTML
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Convert PHP to HTML
+        run: |
+          mkdir build
+          cp -r assets build/
+          # Create the conversion script
+          cat << 'EOF' > convert.php
+          <?php
+          function compileToHtml($sourceFile, $outputFile) {
+              ob_start();
+              include $sourceFile;
+              $content = ob_get_clean();
+              $content = preg_replace('/href="([^"]+)\.php"/', 'href="$1.html"', $content);
+              file_put_contents($outputFile, $content);
+          }
+          $files = ['index.php', 'services.php', 'solvency.php', 'contact.php'];
+          foreach ($files as $file) {
+              if (file_exists($file)) {
+                  compileToHtml($file, 'build/' . str_replace('.php', '.html', $file));
+              }
+          }
+          ?>
+          EOF
+          php convert.php
+          rm convert.php
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build
+          branch: gh-pages
