@@ -1,0 +1,143 @@
+
+Warning: Undefined array key "REQUEST_METHOD" in /data/data/com.termux/files/home/bdtrippers/contact.php on line 3
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BD TRIPPER - Visa & Travel Services</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts for elevated typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg custom-navbar sticky-top shadow-sm">
+        <div class="container d-flex justify-content-between">
+            <a class="navbar-brand brand-logo" href="index.html">
+                BD <span class="fw-light">TRIPPER</span>
+            </a>
+
+            <!-- Custom 3-dot Mobile Menu Button (Only shows on mobile) -->
+            <button class="navbar-toggler border-0 shadow-none px-2 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-ellipsis-vertical fs-2"></i>
+            </button>
+
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link custom-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-link" href="services.html">Visa Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-link" href="solvency.html">Bank Solvency</a>
+                    </li>
+                    <li class="nav-item ms-lg-3 mt-3 mt-lg-0 w-100 w-lg-auto text-center">
+                        <a class="btn custom-btn-white rounded-pill px-4" href="contact.html">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div class="container my-5">
+    <h1 class="text-center text-primary mb-5">Contact BD TRIPPER</h1>
+    
+    <div class="row">
+        <!-- Contact Information -->
+        <div class="col-md-5 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body bg-light p-4 rounded">
+                    <h3>Get in Touch</h3>
+                    <p>Have questions about visas or bank solvency? Reach out to us!</p>
+                    
+                    <ul class="list-unstyled mt-4">
+                        <li class="mb-3"><i class="fas fa-map-marker-alt text-primary me-2"></i> 123 Travel Avenue, Dhaka, Bangladesh</li>
+                        <li class="mb-3"><i class="fas fa-phone text-primary me-2"></i> +880 1711-000000</li>
+                        <li class="mb-3"><i class="fas fa-envelope text-primary me-2"></i> info@bdtrippers.com</li>
+                        <li class="mb-3"><i class="fab fa-whatsapp text-success me-2"></i> WhatsApp Available</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Form -->
+        <div class="col-md-7">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Send us a Message</h4>
+                </div>
+                <div class="card-body p-4">
+                                        
+                    <form method="POST" action="contact.php">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Your Message / Requirement</label>
+                            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Send Message <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>BD TRIPPER</h5>
+                    <p>Your trusted visa processing partner.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="services.html" class="text-decoration-none">Visa Services</a></li>
+                        <li><a href="solvency.html" class="text-decoration-none">Bank Solvency</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Follow Us</h5>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <p class="mb-0">&copy; 2026 BD TRIPPER. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Tawk.to Live Chat Snippet -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/65abcdef1234567890abcdef/1abcd2efg'; /* Placeholder ID */
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+</body>
+</html>
