@@ -3,6 +3,7 @@
 <!-- Hero Section -->
 <section class="hero-section">
     <div class="container">
+        <h2 class="welcome-text mb-2">Welcome to BD Tripper</h2>
         <h1 class="display-4 fw-bold">Travel with Ease</h1>
         <p class="lead"><span class="hassle-text">Hassle</span>-free Visa Processing & Bank Solvency Support for Any Country.</p>
         <a href="services.php" class="btn btn-light btn-lg mt-3">Explore Services</a>
