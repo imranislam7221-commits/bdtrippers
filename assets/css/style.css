@@ -143,6 +143,14 @@ h1, h2, h3, h4, h5, h6, .display-4 {
     padding: 100px 0;
     text-align: center;
 }
+.welcome-text {
+    font-size: 2.2rem;
+    color: #cce5ff; /* Light blue color for elegance */
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
 .hero-section p.lead {
     font-size: 1.5rem; /* Lead text boro kora holo */
 }
