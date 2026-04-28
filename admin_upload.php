@@ -17,7 +17,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['visa_photo']) && $is_
         file_put_contents($json_file, json_encode($current_data));
         $status = '<div class="alert alert-success">Photo uploaded successfully!</div>';
     } else {
-        $status = '<div class="alert alert-danger">Upload failed.</div>';
+        $error = $_FILES["visa_photo"]["error"];
+        $error_msg = "Upload failed. Error code: $error. ";
+        if ($error == 1 || $error == 2) $error_msg .= "File is too large.";
+        if ($error == 3) $error_msg .= "Partial upload.";
+        if ($error == 4) $error_msg .= "No file selected.";
+        $status = '<div class="alert alert-danger">' . $error_msg . '</div>';
     }
 }
 ?>

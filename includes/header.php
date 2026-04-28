@@ -37,6 +37,9 @@
                     <li class="nav-item">
                         <a class="nav-link custom-link" href="solvency.php">Bank Solvency</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-link" href="admin_upload.php">Admin Panel</a>
+                    </li>
                     <li class="nav-item ms-lg-3 mt-3 mt-lg-0 w-100 w-lg-auto text-center">
                         <a class="btn custom-btn-white rounded-pill px-4" href="contact.php">Contact Us</a>
                     </li>

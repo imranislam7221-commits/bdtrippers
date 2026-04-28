@@ -22,7 +22,7 @@
                 </div>
             </div>
             <hr>
-            <p class="mb-0">&copy; <?php echo date('Y'); ?> BD TRIPPER. All Rights Reserved. <a href="admin_upload.php" style="color: transparent; text-decoration: none;">.</a></p>
+            <p class="mb-0">&copy; <?php echo date('Y'); ?> BD TRIPPER. All Rights Reserved.</p>
         </div>
     </footer>
 
