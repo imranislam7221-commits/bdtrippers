@@ -46,4 +46,28 @@
     </div>
 </section>
 
+<!-- Visa Success Gallery -->
+<section class="container my-5">
+    <h2 class="text-center text-primary mb-4">Our Success Stories</h2>
+    <div class="row">
+        <?php
+        $json_file = 'includes/visas.json';
+        if (file_exists($json_file)) {
+            $visas = json_decode(file_get_contents($json_file), true) ?? [];
+            foreach (array_reverse($visas) as $visa) {
+                echo '
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="assets/images/visas/' . $visa['file'] . '" class="card-img-top" alt="Visa Success">
+                        <div class="card-body p-2 text-center">
+                            <span class="badge bg-primary">' . $visa['caption'] . '</span>
+                        </div>
+                    </div>
+                </div>';
+            }
+        }
+        ?>
+    </div>
+</section>
+
 <?php include 'includes/footer.php'; ?>
