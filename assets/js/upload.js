@@ -5,27 +5,58 @@ async function uploadDocuments() {
     const passportFile = document.getElementById('passport-file').files[0];
     const photoFile = document.getElementById('photo-file').files[0];
     const statusDiv = document.getElementById('upload-status');
+    const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
     if (!passportFile && !photoFile) {
         alert("Please select at least one file.");
         return;
     }
 
+    // Check file sizes
+    if (passportFile && passportFile.size > MAX_SIZE) {
+        alert("Passport file is too big! Max limit 5MB.");
+        return;
+    }
+    if (photoFile && photoFile.size > MAX_SIZE) {
+        alert("Photo file is too big! Max limit 5MB.");
+        return;
+    }
+
     statusDiv.innerHTML = "Uploading...";
+
+    const uploadFile = (file, type) => {
+        return new Promise((resolve, reject) => {
+            const ref = storage.ref(`documents/${user.uid}/${type}_${Date.now()}_${file.name}`);
+            const uploadTask = ref.put(file);
+
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    statusDiv.innerHTML = `Uploading ${type}: ${Math.round(progress)}%`;
+                },
+                (error) => reject(error),
+                () => resolve()
+            );
+        });
+    };
 
     try {
         if (passportFile) {
-            const ref = storage.ref(`documents/${user.uid}/passport_${Date.now()}_${passportFile.name}`);
-            await ref.put(passportFile);
+            await uploadFile(passportFile, 'passport');
         }
         if (photoFile) {
-            const ref = storage.ref(`documents/${user.uid}/photo_${Date.now()}_${photoFile.name}`);
-            await ref.put(photoFile);
+            await uploadFile(photoFile, 'photo');
         }
         statusDiv.innerHTML = '<span class="text-success">Upload successful!</span>';
         alert("Documents uploaded successfully!");
     } catch (error) {
-        statusDiv.innerHTML = '<span class="text-danger">Upload failed.</span>';
+        let errorMsg = "Upload failed.";
+        if (error.code === 'storage/unauthorized') {
+            errorMsg = "No permission to upload.";
+        } else if (error.code === 'storage/retry-limit-exceeded') {
+            errorMsg = "Upload took too long, try again.";
+        }
+        statusDiv.innerHTML = `<span class="text-danger">${errorMsg}</span>`;
         console.error(error);
     }
 }
