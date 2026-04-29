@@ -33,11 +33,6 @@
                 BD <span class="fw-light">TRIPPER</span>
             </a>
 
-            <!-- Custom 3-dot Mobile Menu Button (Only shows on mobile) -->
-            <button class="navbar-toggler border-0 shadow-none px-2 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fa-solid fa-ellipsis-vertical fs-2"></i>
-            </button>
-
             <!-- Navigation Links -->
             <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
@@ -53,21 +48,28 @@
                     <li class="nav-item">
                         <a class="nav-link custom-link" href="admin_upload.php">Admin Panel</a>
                     </li>
-                    <li class="nav-item ms-lg-2 py-2 py-lg-0" id="auth-btn-container">
-                        <div class="d-flex gap-2 justify-content-center justify-content-lg-start">
-                            <button onclick="loginWithGoogle()" class="btn btn-primary rounded-pill px-3">
-                                <i class="fab fa-google"></i> Login
-                            </button>
-                            <button onclick="loginWithFacebook()" class="btn btn-primary rounded-pill px-3" style="background-color: #1877F2; border-color: #1877F2;">
-                                <i class="fab fa-facebook-f"></i>
-                            </button>
-                        </div>
-                    </li>
                     <li class="nav-item ms-lg-3 mt-3 mt-lg-0 w-100 w-lg-auto text-center">
                         <a class="btn custom-btn-white rounded-pill px-4" href="contact.php">Contact Us</a>
                     </li>
                 </ul>
             </div>
+
+            <!-- Login Buttons (Always visible outside the menu) -->
+            <div class="ms-auto d-flex gap-2 align-items-center" id="auth-btn-container">
+                <div class="d-flex gap-2">
+                    <button onclick="loginWithGoogle()" class="btn btn-primary rounded-pill px-2 px-md-3">
+                        <i class="fab fa-google"></i> <span class="d-none d-sm-inline">Login</span>
+                    </button>
+                    <button onclick="loginWithFacebook()" class="btn btn-primary rounded-pill px-2 px-md-3" style="background-color: #1877F2; border-color: #1877F2;">
+                        <i class="fab fa-facebook-f"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Custom 3-dot Mobile Menu Button -->
+            <button class="navbar-toggler border-0 shadow-none px-2 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-ellipsis-vertical fs-2"></i>
+            </button>
         </div>
     </nav>
     <script>
