@@ -40,6 +40,7 @@
     </div>
 </div>
 
+<script src="assets/js/upload.js"></script>
 <script>
     auth.onAuthStateChanged(user => {
         if (!user) {
