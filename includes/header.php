@@ -52,6 +52,11 @@
                     <li class="nav-item">
                         <a class="nav-link custom-link" href="admin_upload.php">Admin Panel</a>
                     </li>
+                    <li class="nav-item ms-lg-2" id="auth-btn-container">
+                        <button onclick="loginWithGoogle()" class="btn btn-primary rounded-pill px-4">
+                            <i class="fab fa-google me-2"></i> Login
+                        </button>
+                    </li>
                     <li class="nav-item ms-lg-3 mt-3 mt-lg-0 w-100 w-lg-auto text-center">
                         <a class="btn custom-btn-white rounded-pill px-4" href="contact.php">Contact Us</a>
                     </li>
@@ -59,3 +64,22 @@
             </div>
         </div>
     </nav>
+    <script src="assets/js/auth.js"></script>
+    <script>
+        auth.onAuthStateChanged(user => {
+            const container = document.getElementById('auth-btn-container');
+            if (user) {
+                container.innerHTML = `
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown">
+                            <img src="${user.photoURL}" width="25" class="rounded-circle me-1"> ${user.displayName.split(' ')[0]}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="dashboard.php">Dashboard</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
+                        </ul>
+                    </div>`;
+            }
+        });
+    </script>
