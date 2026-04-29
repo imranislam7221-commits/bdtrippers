@@ -24,6 +24,7 @@
       const db = firebase.firestore();
       const storage = firebase.storage();
     </script>
+    <script src="assets/js/auth.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg custom-navbar sticky-top shadow-sm">
@@ -64,7 +65,6 @@
             </div>
         </div>
     </nav>
-    <script src="assets/js/auth.js"></script>
     <script>
         auth.onAuthStateChanged(user => {
             const container = document.getElementById('auth-btn-container');

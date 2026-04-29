@@ -11,6 +11,18 @@ async function loginWithGoogle() {
     }
 }
 
+async function loginWithFacebook() {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    try {
+        const result = await auth.signInWithPopup(provider);
+        await syncUserToFirestore(result.user);
+        window.location.href = 'dashboard.php';
+    } catch (error) {
+        console.error("Facebook Login failed", error);
+        alert("Facebook Login failed: " + error.message);
+    }
+}
+
 async function syncUserToFirestore(user) {
     const userRef = db.collection('users').doc(user.uid);
     await userRef.set({
@@ -25,5 +37,8 @@ async function syncUserToFirestore(user) {
 function logout() {
     auth.signOut().then(() => {
         window.location.href = 'index.php';
+    }).catch((error) => {
+        console.error("Logout failed", error);
+        alert("Logout failed: " + error.message);
     });
 }
