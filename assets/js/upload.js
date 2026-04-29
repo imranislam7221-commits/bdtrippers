@@ -60,3 +60,46 @@ async function uploadDocuments() {
         console.error(error);
     }
 }
+
+async function createBooking() {
+    const user = auth.currentUser;
+    const dest = document.getElementById('destination').value;
+    const date = document.getElementById('travel-date').value;
+
+    if (!dest || !date) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    await db.collection('bookings').add({
+        uid: user.uid,
+        destination: dest,
+        travelDate: date,
+        status: 'Pending',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    alert("Booking submitted!");
+    loadBookings();
+}
+
+async function loadBookings() {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const querySnapshot = await db.collection('bookings').where('uid', '==', user.uid).orderBy('createdAt', 'desc').get();
+    const list = document.getElementById('booking-list');
+
+    if (querySnapshot.empty) {
+        list.innerHTML = '<p class="text-muted">No bookings found.</p>';
+        return;
+    }
+
+    let html = '<table class="table"><thead><tr><th>Destination</th><th>Date</th><th>Status</th></tr></thead><tbody>';
+    querySnapshot.forEach(doc => {
+        const data = doc.data();
+        html += `<tr><td>${data.destination}</td><td>${data.travelDate}</td><td><span class="badge bg-warning text-dark">${data.status}</span></td></tr>`;
+    });
+    html += '</tbody></table>';
+    list.innerHTML = html;
+}
