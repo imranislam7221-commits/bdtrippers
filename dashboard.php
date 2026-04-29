@@ -41,7 +41,7 @@
                             <input type="date" id="travel-date" class="form-control">
                         </div>
                         <div class="col-12">
-                            <button onclick="createBooking()" class="btn btn-info text-white w-100">Submit Booking</button>
+                            <button id="booking-submit-btn" onclick="createBooking()" class="btn btn-info text-white w-100">Submit Booking</button>
                         </div>
                     </div>
                 </div>

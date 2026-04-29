@@ -65,28 +65,51 @@ async function createBooking() {
     const user = auth.currentUser;
     const dest = document.getElementById('destination').value;
     const date = document.getElementById('travel-date').value;
+    const submitBtn = document.getElementById('booking-submit-btn');
 
     if (!dest || !date) {
         alert("Please fill in all fields.");
         return;
     }
 
-    await db.collection('bookings').add({
-        uid: user.uid,
-        destination: dest,
-        travelDate: date,
-        status: 'Pending',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    // Disable button and show loading state
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Submitting...";
+    }
 
-    alert("Booking submitted!");
-    loadBookings();
+    try {
+        await db.collection('bookings').add({
+            uid: user.uid,
+            destination: dest,
+            travelDate: date,
+            status: 'Pending',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        alert("Booking submitted!");
+        loadBookings();
+
+        // Clear fields
+        document.getElementById('destination').value = '';
+        document.getElementById('travel-date').value = '';
+    } catch (error) {
+        console.error("Error creating booking:", error);
+        alert("Failed to submit booking. Please try again.");
+    } finally {
+        // Restore button state
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Submit Booking";
+        }
+    }
 }
 
 async function loadBookings() {
     const user = auth.currentUser;
     if (!user) return;
 
+    // Note: A composite index (uid ASC, createdAt DESC) is required for this query
     const querySnapshot = await db.collection('bookings').where('uid', '==', user.uid).orderBy('createdAt', 'desc').get();
     const list = document.getElementById('booking-list');
 
