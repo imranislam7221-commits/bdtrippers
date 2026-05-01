@@ -57,7 +57,7 @@
             <!-- Login Button with Dropdown (Always visible outside the menu) -->
             <div class="ms-auto d-flex align-items-center me-3" id="auth-btn-container">
                 <div class="dropdown">
-                    <button class="btn btn-login-red rounded-pill px-3 px-md-4 dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-primary rounded-pill px-3 px-md-4 dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-sign-in-alt me-1"></i> Login
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" aria-labelledby="loginDropdown">

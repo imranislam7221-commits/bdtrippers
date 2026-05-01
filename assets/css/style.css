@@ -211,19 +211,3 @@ h1, h2, h3, h4, h5, h6, .display-4 {
     font-size: 24px;
     margin: 0 10px;
 }
-
-/* Custom Red Login Button */
-.btn-login-red {
-    background-color: #e63946 !important;
-    border-color: #e63946 !important;
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    transition: var(--transition-smooth);
-}
-
-.btn-login-red:hover {
-    background-color: #d62828 !important;
-    border-color: #d62828 !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
