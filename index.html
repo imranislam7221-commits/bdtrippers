@@ -150,9 +150,50 @@
 <!-- Visa Success Gallery -->
 <section class="container my-5">
     <h2 class="text-center text-primary mb-4">Our Success Stories</h2>
-    <div class="row">
+    <div class="row" id="visa-gallery">
+        <!-- Success stories will be loaded here from Firebase -->
+        <div class="col-12 text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
+        </div>
+    </div>
 </section>
+
+<script>
+    async function loadSuccessStories() {
+        const gallery = document.getElementById('visa-gallery');
+        try {
+            const querySnapshot = await db.collection('success_stories').orderBy('createdAt', 'desc').get();
+            
+            if (querySnapshot.empty) {
+                gallery.innerHTML = '<div class="col-12 text-center"><p class="text-muted">No success stories found yet.</p></div>';
+                return;
+            }
+
+            let html = '';
+            querySnapshot.forEach(doc => {
+                const data = doc.data();
+                html += `
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0" style="border-radius: 12px; overflow: hidden;">
+                        <img src="${data.imageUrl}" class="card-img-top" alt="Visa Success" style="height: 250px; object-fit: cover;">
+                        <div class="card-body p-2 text-center">
+                            <span class="badge bg-primary px-3 py-2 rounded-pill">${data.caption}</span>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            gallery.innerHTML = html;
+        } catch (error) {
+            console.error("Error loading success stories:", error);
+            gallery.innerHTML = '<div class="col-12 text-center text-danger">Failed to load success stories.</div>';
+        }
+    }
+
+    // Load stories when page is ready
+    window.addEventListener('load', loadSuccessStories);
+</script>
 
     <footer class="footer text-center">
         <div class="container">
