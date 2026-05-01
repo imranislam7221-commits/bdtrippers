@@ -54,15 +54,24 @@
                 </ul>
             </div>
 
-            <!-- Login Buttons (Always visible outside the menu) -->
-            <div class="ms-auto d-flex gap-2 align-items-center" id="auth-btn-container">
-                <div class="d-flex gap-2">
-                    <button onclick="loginWithGoogle()" class="btn btn-primary rounded-pill px-2 px-md-3">
-                        <i class="fab fa-google"></i> <span class="d-none d-sm-inline">Login</span>
+            <!-- Login Button with Dropdown (Always visible outside the menu) -->
+            <div class="ms-auto d-flex align-items-center me-3" id="auth-btn-container">
+                <div class="dropdown">
+                    <button class="btn btn-primary rounded-pill px-3 px-md-4 dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-sign-in-alt me-1"></i> Login
                     </button>
-                    <button onclick="loginWithFacebook()" class="btn btn-primary rounded-pill px-2 px-md-3" style="background-color: #1877F2; border-color: #1877F2;">
-                        <i class="fab fa-facebook-f"></i>
-                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" aria-labelledby="loginDropdown">
+                        <li>
+                            <a class="dropdown-item py-2" href="#" onclick="loginWithGoogle()">
+                                <i class="fab fa-google text-danger me-2"></i> Login with Google
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item py-2" href="#" onclick="loginWithFacebook()">
+                                <i class="fab fa-facebook-f text-primary me-2" style="color: #1877F2;"></i> Login with Facebook
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
@@ -83,7 +92,7 @@
                         <button class="btn btn-outline-primary dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown">
                             <img src="${photoURL}" width="25" class="rounded-circle me-1"> ${displayName}
                         </button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                             <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
