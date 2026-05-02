@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { db, storage, auth } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { signInAnonymously } from "firebase/auth";
 
 export default function AdminUpload() {
@@ -20,7 +20,7 @@ export default function AdminUpload() {
   const handleLogin = async () => {
     if (password === correctPass) {
       try {
-        setStatus({ type: "info", message: "Step 1: Authenticating..." });
+        setStatus({ type: "info", message: "Authenticating..." });
         await signInAnonymously(auth);
         setIsLoggedIn(true);
         setStatus({ type: "success", message: "Ready to upload!" });
@@ -39,44 +39,41 @@ export default function AdminUpload() {
     }
 
     setUploading(true);
-    setStatus({ type: "info", message: "Step 2: Sending data to Firebase..." });
+    setStatus({ type: "info", message: "Step 2: Preparing photo..." });
 
-    // Failsafe Timeout - guaranteed to trigger
-    // Upload execution
-    const uploadPromise = (async () => {
-      setStatus({ type: "info", message: "Step 2A: Creating Storage Ref..." });
+    try {
+      // Step 2: Convert to Base64
+      const reader = new FileReader();
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const base64String = await base64Promise;
+      setStatus({ type: "info", message: "Step 3: Sending data..." });
+
       const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, uniqueName);
+      
+      // Step 3: Direct String Upload
+      await uploadString(storageRef, base64String, 'data_url');
+      
+      setStatus({ type: "info", message: "Step 4: Saving to website..." });
+      const downloadURL = await getDownloadURL(storageRef);
 
-      setStatus({ type: "info", message: "Step 2B: Starting data stream (Uploading)..." });
-      const snapshot = await uploadBytes(storageRef, file);
-
-      setStatus({ type: "info", message: "Step 2C: Fetching secure URL..." });
-      const downloadURL = await getDownloadURL(snapshot.ref);
-
-      setStatus({ type: "info", message: "Step 2D: Saving metadata to Database..." });
       await addDoc(collection(db, 'success_stories'), {
         imageUrl: downloadURL,
         caption: caption,
         createdAt: serverTimestamp()
       });
-      return "success";
-    })();
-    const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error("GATEWAY_TIMEOUT")), 35000)
-    );
 
-    try {
-      await Promise.race([uploadPromise, timeoutPromise]);
-      setStatus({ type: "success", message: "Successfully Uploaded!" });
+      setStatus({ type: "success", message: "Success! Photo uploaded." });
       setFile(null);
       setCaption("");
     } catch (error: any) {
-      console.error("Upload process error:", error);
-      let msg = error.message === "GATEWAY_TIMEOUT" 
-        ? "Upload timed out (35s). Check internet or VPN." 
-        : "Failed: " + error.message;
-      setStatus({ type: "danger", message: msg });
+      console.error("Upload process failure:", error);
+      setStatus({ type: "danger", message: "Failed: " + error.message });
     } finally {
       setUploading(false);
     }
