@@ -8,8 +8,6 @@
     --light-bg: #ffffff;
     --text-main: #1a1a1a;
     --text-muted: #666666;
-    --font-heading: var(--font-heading);
-    --font-body: var(--font-body);
     --transition-heavy: all 0.8s cubic-bezier(0.32, 0.72, 0, 1);
     --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
