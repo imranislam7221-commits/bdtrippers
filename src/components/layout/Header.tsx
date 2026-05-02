@@ -20,8 +20,9 @@ export default function Header() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Google Login Error:", error);
+      alert("Google Login Error: " + error.message);
     }
   };
 
@@ -29,8 +30,9 @@ export default function Header() {
     const provider = new FacebookAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Facebook Login Error:", error);
+      alert("Facebook Login Error: " + error.message);
     }
   };
 
