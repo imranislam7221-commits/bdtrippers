@@ -43,18 +43,19 @@ export default function AdminUpload() {
     setStatus({ type: "info", message: "Starting upload..." });
 
     try {
-      const fileName = Date.now() + "_" + file.name;
-      const storageRef = ref(storage, 'success_stories/' + fileName);
+      const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+      const storageRef = ref(storage, `success_stories/${fileName}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on('state_changed',
         (snapshot) => {
           const progressValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setProgress(progressValue);
+          console.log(`Upload progress: ${progressValue}%`);
         },
         (error) => {
-          console.error("Upload error:", error);
-          setStatus({ type: "danger", message: `Error: ${error.message}` });
+          console.error("Firebase Storage Error:", error);
+          setStatus({ type: "danger", message: `Upload Failed: ${error.message} (Check if Storage Rules are published)` });
           setUploading(false);
         },
         async () => {
@@ -73,8 +74,8 @@ export default function AdminUpload() {
         }
       );
     } catch (error: any) {
-      console.error("Upload failed:", error);
-      setStatus({ type: "danger", message: `Error: ${error.message}` });
+      console.error("System Error:", error);
+      setStatus({ type: "danger", message: `System Error: ${error.message}` });
       setUploading(false);
     }
   };
