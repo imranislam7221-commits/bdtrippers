@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { db, storage, auth } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { signInAnonymously } from "firebase/auth";
 
 export default function AdminUpload() {
@@ -13,6 +13,7 @@ export default function AdminUpload() {
   const [file, setFile] = useState<File | null>(null);
   const [caption, setCaption] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState({ type: "", message: "" });
 
   const correctPass = "siam123";
@@ -20,10 +21,10 @@ export default function AdminUpload() {
   const handleLogin = async () => {
     if (password === correctPass) {
       try {
-        setStatus({ type: "info", message: "Authenticating..." });
+        setStatus({ type: "info", message: "Step 1: Authenticating..." });
         await signInAnonymously(auth);
         setIsLoggedIn(true);
-        setStatus({ type: "success", message: "Login Successful! You can now upload." });
+        setStatus({ type: "success", message: "Login Successful! Ready to upload." });
       } catch (error: any) {
         console.error("Auth error:", error);
         setStatus({ type: "danger", message: "Authentication failed: " + error.message });
@@ -40,52 +41,48 @@ export default function AdminUpload() {
     }
 
     setUploading(true);
-    setStatus({ type: "info", message: "Step 1: Testing Firebase Connection..." });
-
-    const timeoutId = setTimeout(() => {
-      if (uploading) {
-        setStatus({ type: "danger", message: "Timeout: No response from Firebase after 120s. Please check if your Mobile Data allows background data or try a different browser." });
-        setUploading(false);
-      }
-    }, 120000);
+    setProgress(0);
+    setStatus({ type: "info", message: "Step 2: Connecting to Firebase..." });
 
     try {
-      // Diagnostic 1: Auth check
-      if (!auth.currentUser) {
-        setStatus({ type: "info", message: "Step 2: Authenticating with Firebase..." });
-        await signInAnonymously(auth);
-      }
-
-      // Diagnostic 2: Storage Availability
-      setStatus({ type: "info", message: "Step 3: Connecting to Storage Bucket..." });
       const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, uniqueName);
-      
-      // Step 4: Actual Upload
-      setStatus({ type: "info", message: "Step 4: Sending Data (this may take time on mobile)..." });
-      const snapshot = await uploadBytes(storageRef, file);
-      
-      setStatus({ type: "info", message: "Step 5: Finalizing Database..." });
-      const downloadURL = await getDownloadURL(snapshot.ref);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-      await addDoc(collection(db, 'success_stories'), {
-        imageUrl: downloadURL,
-        caption: caption,
-        createdAt: serverTimestamp()
-      });
+      uploadTask.on('state_changed',
+        (snapshot) => {
+          const progressValue = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          setProgress(progressValue);
+          setStatus({ 
+            type: "info", 
+            message: `Step 3: Uploading Image (${progressValue}%). ${progressValue === 0 ? "Wait, if it stays at 0%, try a smaller photo or VPN." : ""}` 
+          });
+        },
+        (error) => {
+          console.error("Upload Error:", error);
+          setStatus({ type: "danger", message: `Upload Failed: ${error.message}. (Check Firebase Storage Rules)` });
+          setUploading(false);
+        },
+        async () => {
+          setStatus({ type: "info", message: "Step 4: Saving to Database..." });
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
-      clearTimeout(timeoutId);
-      setStatus({ type: "success", message: "Success! Photo is now live on the website." });
-      setFile(null);
-      setCaption("");
+          await addDoc(collection(db, 'success_stories'), {
+            imageUrl: downloadURL,
+            caption: caption,
+            createdAt: serverTimestamp()
+          });
+
+          setStatus({ type: "success", message: "Success! Photo is now live on the website." });
+          setUploading(false);
+          setFile(null);
+          setCaption("");
+          setProgress(0);
+        }
+      );
     } catch (error: any) {
-      clearTimeout(timeoutId);
-      console.error("Diagnostic Error:", error);
-      let msg = error.message;
-      if (error.code === 'storage/unauthorized') msg = "Firebase says: Unauthorized. Please ensure Storage Rules are 'allow read, write: if true;'";
-      if (error.code === 'storage/retry-limit-exceeded') msg = "Network Error: Could not connect to Firebase. Try using a VPN or WiFi.";
-      setStatus({ type: "danger", message: `Failed at ${status.message}: ${msg}` });
-    } finally {
+      console.error("System Failure:", error);
+      setStatus({ type: "danger", message: `System Error: ${error.message}` });
       setUploading(false);
     }
   };
@@ -150,8 +147,17 @@ export default function AdminUpload() {
                     className="btn btn-success w-100 fw-bold py-2"
                   >
                     <i className="fas fa-cloud-upload-alt me-1"></i>
-                    {uploading ? "Uploading..." : "Upload to Firebase"}
+                    {uploading ? `Uploading... ${progress}%` : "Upload to Firebase"}
                   </button>
+                  {uploading && (
+                    <div className="progress mt-3">
+                      <div
+                        className="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                    </div>
+                  )}
                 </div>
               )}
 
