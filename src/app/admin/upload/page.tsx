@@ -42,15 +42,19 @@ export default function AdminUpload() {
     setStatus({ type: "info", message: "Step 2: Sending data to Firebase..." });
 
     // Failsafe Timeout - guaranteed to trigger
+    // Upload execution
     const uploadPromise = (async () => {
+      setStatus({ type: "info", message: "Step 2A: Creating Storage Ref..." });
       const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, uniqueName);
-      
-      // Upload execution
+
+      setStatus({ type: "info", message: "Step 2B: Starting data stream (Uploading)..." });
       const snapshot = await uploadBytes(storageRef, file);
+
+      setStatus({ type: "info", message: "Step 2C: Fetching secure URL..." });
       const downloadURL = await getDownloadURL(snapshot.ref);
 
-      // Save to Firestore
+      setStatus({ type: "info", message: "Step 2D: Saving metadata to Database..." });
       await addDoc(collection(db, 'success_stories'), {
         imageUrl: downloadURL,
         caption: caption,
@@ -58,7 +62,6 @@ export default function AdminUpload() {
       });
       return "success";
     })();
-
     const timeoutPromise = new Promise((_, reject) => 
       setTimeout(() => reject(new Error("GATEWAY_TIMEOUT")), 35000)
     );
