@@ -69,15 +69,15 @@ export default function Home() {
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-6 mb-5 mb-lg-0 text-start">
-              <span className="hero-eyebrow fade-up">Trusted Travel Partner</span>
-              <h1 className="hero-title fade-up delay-100">
+              <span className="hero-eyebrow">Trusted Travel Partner</span>
+              <h1 className="hero-title">
                 Travel with <br />
                 <span style={{ fontStyle: 'italic' }}>Ease & Confidence</span>
               </h1>
-              <p className="hero-lead fade-up delay-200">
+              <p className="hero-lead">
                 Premium Visa Processing and Bank Solvency support tailored for your global journey. Experience hassle-free documentation with our expert team.
               </p>
-              <div className="fade-up delay-300">
+              <div>
                 <Link href="/services" className="btn-premium">
                   <span className="btn-premium-inner">
                     Explore Our Services
