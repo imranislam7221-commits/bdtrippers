@@ -23,10 +23,9 @@ export default function AdminUpload() {
         setStatus({ type: "info", message: "Step 1: Authenticating..." });
         await signInAnonymously(auth);
         setIsLoggedIn(true);
-        setStatus({ type: "success", message: "Login Successful! Ready to upload." });
+        setStatus({ type: "success", message: "Ready to upload!" });
       } catch (error: any) {
-        console.error("Auth error:", error);
-        setStatus({ type: "danger", message: "Authentication failed: " + error.message });
+        setStatus({ type: "danger", message: "Auth Error: " + error.message });
       }
     } else {
       alert("Incorrect Password!");
@@ -40,41 +39,41 @@ export default function AdminUpload() {
     }
 
     setUploading(true);
-    setStatus({ type: "info", message: "Step 2: Connecting and uploading photo... (Max 30s)" });
+    setStatus({ type: "info", message: "Step 2: Sending data to Firebase..." });
 
-    const timeoutId = setTimeout(() => {
-      if (uploading) {
-        setStatus({ type: "danger", message: "Upload Timeout: Firebase Storage is taking too long to respond. Please check your internet or Firebase Rules." });
-        setUploading(false);
-      }
-    }, 30000);
-
-    try {
+    // Failsafe Timeout - guaranteed to trigger
+    const uploadPromise = (async () => {
       const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, uniqueName);
       
+      // Upload execution
       const snapshot = await uploadBytes(storageRef, file);
-      clearTimeout(timeoutId);
-      
-      setStatus({ type: "info", message: "Step 3: Saving to website..." });
       const downloadURL = await getDownloadURL(snapshot.ref);
 
+      // Save to Firestore
       await addDoc(collection(db, 'success_stories'), {
         imageUrl: downloadURL,
         caption: caption,
         createdAt: serverTimestamp()
       });
+      return "success";
+    })();
 
-      setStatus({ type: "success", message: "Photo uploaded and live successfully!" });
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("GATEWAY_TIMEOUT")), 35000)
+    );
+
+    try {
+      await Promise.race([uploadPromise, timeoutPromise]);
+      setStatus({ type: "success", message: "Successfully Uploaded!" });
       setFile(null);
       setCaption("");
     } catch (error: any) {
-      clearTimeout(timeoutId);
-      console.error("Critical Upload Failure:", error);
-      let errorMsg = `Upload Failed: ${error.message}`;
-      if (error.code === 'storage/unauthorized') errorMsg = "Permission Denied! Check Storage Rules.";
-      if (error.code === 'storage/retry-limit-exceeded') errorMsg = "Network Error! Try a smaller photo or VPN.";
-      setStatus({ type: "danger", message: errorMsg });
+      console.error("Upload process error:", error);
+      let msg = error.message === "GATEWAY_TIMEOUT" 
+        ? "Upload timed out (35s). Check internet or VPN." 
+        : "Failed: " + error.message;
+      setStatus({ type: "danger", message: msg });
     } finally {
       setUploading(false);
     }
@@ -85,8 +84,8 @@ export default function AdminUpload() {
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card shadow border-0" style={{ borderRadius: '15px' }}>
-            <div className="card-header bg-primary text-white text-center py-3" style={{ borderRadius: '15px 15px 0 0' }}>
-              <h4 className="m-0 fw-bold">Upload Success Photo</h4>
+            <div className="card-header bg-primary text-white text-center py-3">
+              <h4 className="m-0 fw-bold">Admin: Photo Upload</h4>
             </div>
             <div className="card-body p-4">
               {status.message && (
@@ -94,69 +93,33 @@ export default function AdminUpload() {
               )}
 
               {!isLoggedIn ? (
-                <div id="login-section">
-                  <div className="mb-3">
-                    <label className="form-label fw-bold">Admin Password</label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Enter password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-                    />
-                  </div>
-                  <button onClick={handleLogin} className="btn btn-primary w-100 fw-bold py-2">Login to Admin</button>
+                <div>
+                  <input
+                    type="password"
+                    className="form-control mb-3"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button onClick={handleLogin} className="btn btn-primary w-100 fw-bold">Login</button>
                 </div>
               ) : (
-                <div id="upload-section">
-                  <div className="text-end mb-3">
-                    <Link href="/admin/inbox" className="btn btn-sm btn-outline-primary">
-                      <i className="fas fa-inbox me-1"></i> Go to Inbox
-                    </Link>
+                <div>
+                  <div className="text-end mb-3"><Link href="/admin/inbox" className="btn btn-sm btn-link">Admin Inbox</Link></div>
+                  <div className="mb-3">
+                    <label className="form-label small fw-bold">Select Image</label>
+                    <input type="file" className="form-control" onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)} />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label fw-bold">Select Visa Photo</label>
-                    <input
-                      type="file"
-                      className="form-control"
-                      accept="image/*"
-                      onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
-                    />
+                    <label className="form-label small fw-bold">Caption</label>
+                    <input type="text" className="form-control" placeholder="e.g. USA Visa" value={caption} onChange={(e) => setCaption(e.target.value)} />
                   </div>
-                  <div className="mb-3">
-                    <label className="form-label fw-bold">Caption (e.g. USA Student Visa)</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Enter caption"
-                      value={caption}
-                      onChange={(e) => setCaption(e.target.value)}
-                    />
-                  </div>
-                  <button
-                    disabled={uploading}
-                    onClick={handleUpload}
-                    className="btn btn-success w-100 fw-bold py-2"
-                  >
-                    {uploading ? (
-                      <>
-                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                        Uploading Photo...
-                      </>
-                    ) : (
-                      <>
-                        <i className="fas fa-cloud-upload-alt me-1"></i>
-                        Upload to Firebase
-                      </>
-                    )}
+                  <button disabled={uploading} onClick={handleUpload} className="btn btn-success w-100 fw-bold">
+                    {uploading ? "Processing..." : "Start Upload"}
                   </button>
                 </div>
               )}
-
-              <div className="text-center mt-3">
-                <Link href="/" className="btn btn-link text-decoration-none text-muted">Back to Website</Link>
-              </div>
+              <div className="text-center mt-3"><Link href="/" className="small text-muted">Back to Site</Link></div>
             </div>
           </div>
         </div>
