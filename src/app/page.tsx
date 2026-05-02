@@ -87,7 +87,7 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            
+
             <div className="col-lg-6">
               <div className="hero-visual" style={{ position: 'relative' }}>
                 <div className="visual-card" style={{ height: '400px', width: '100%', position: 'relative', overflow: 'hidden', borderRadius: '32px', background: '#eee' }}>
