@@ -43,19 +43,23 @@ export default function AdminUpload() {
     setStatus({ type: "info", message: "Starting upload..." });
 
     try {
-      const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
-      const storageRef = ref(storage, `success_stories/${fileName}`);
+      const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+      const storageRef = ref(storage, uniqueName);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on('state_changed',
         (snapshot) => {
-          const progressValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progressValue = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
           setProgress(progressValue);
-          console.log(`Upload progress: ${progressValue}%`);
+          setStatus({ type: "info", message: `Uploading: ${progressValue}%... Please wait.` });
         },
         (error) => {
-          console.error("Firebase Storage Error:", error);
-          setStatus({ type: "danger", message: `Upload Failed: ${error.message} (Check if Storage Rules are published)` });
+          console.error("Critical Upload Error:", error);
+          let errorMsg = error.message;
+          if (error.code === 'storage/unauthorized') {
+             errorMsg = "Permission Denied! Please double check Firebase Storage Rules are set to 'allow read, write: if true;' and Published.";
+          }
+          setStatus({ type: "danger", message: errorMsg });
           setUploading(false);
         },
         async () => {
@@ -66,7 +70,7 @@ export default function AdminUpload() {
             createdAt: serverTimestamp()
           });
 
-          setStatus({ type: "success", message: "Success! Photo uploaded and saved permanently." });
+          setStatus({ type: "success", message: "Success! Photo is now live on the website." });
           setUploading(false);
           setFile(null);
           setCaption("");
@@ -74,7 +78,7 @@ export default function AdminUpload() {
         }
       );
     } catch (error: any) {
-      console.error("System Error:", error);
+      console.error("System Failure:", error);
       setStatus({ type: "danger", message: `System Error: ${error.message}` });
       setUploading(false);
     }
