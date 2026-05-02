@@ -16,31 +16,23 @@ const HERO_SLIDES = [
   {
     url: "https://images.pexels.com/photos/3769118/pexels-photo-3769118.jpeg?auto=compress&cs=tinysrgb&w=1200",
     title: "Work Visa Support",
-    description: "Global career opportunities for professionals."
+    description: "Global career opportunities."
   },
   {
     url: "https://images.pexels.com/photos/1438072/pexels-photo-1438072.jpeg?auto=compress&cs=tinysrgb&w=1200",
     title: "Student Visa Processing",
-    description: "Secure your future in top foreign universities."
+    description: "Secure your future abroad."
   },
   {
     url: "https://images.pexels.com/photos/4056853/pexels-photo-4056853.jpeg?auto=compress&cs=tinysrgb&w=1200",
     title: "Medical Visa Assistance",
-    description: "Fast-track access to world-class healthcare."
+    description: "World-class healthcare access."
   }
 ];
 
 export default function Home() {
   const [stories, setStories] = useState<SuccessStory[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     async function loadSuccessStories() {
@@ -58,72 +50,77 @@ export default function Home() {
         setLoading(false);
       }
     }
+
     loadSuccessStories();
   }, []);
 
   return (
-    <main style={{ minHeight: '100vh' }}>
-      {/* Hero Section */}
-      <section className="hero-section-v2" style={{ padding: '80px 0', background: '#0056b3', color: 'white' }}>
+    <div>
+      {/* Hero Section V2 */}
+      <section className="hero-section-v2">
         <div className="container">
           <div className="row align-items-center">
-            <div className="col-lg-6 mb-4 mb-lg-0">
-              <span style={{ background: 'rgba(255,255,255,0.1)', padding: '5px 15px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 'bold', textTransform: 'uppercase' }}>
-                Trusted Travel Partner
-              </span>
-              <h1 style={{ fontSize: '3.5rem', fontWeight: '800', marginTop: '20px', lineHeight: '1.2' }}>
+            <div className="col-lg-6 mb-5 mb-lg-0 text-start">
+              <span className="hero-eyebrow">Trusted Travel Partner</span>
+              <h1 className="hero-title">
                 Travel with <br />
-                <span style={{ fontStyle: 'italic', fontWeight: '300' }}>Ease & Confidence</span>
+                <span style={{ fontStyle: 'italic' }}>Ease & Confidence</span>
               </h1>
-              <p style={{ fontSize: '1.1rem', opacity: 0.9, marginTop: '20px', maxWidth: '500px' }}>
-                Premium Visa Processing and Bank Solvency support tailored for your global journey.
+              <p className="hero-lead">
+                Premium Visa Processing and Bank Solvency support tailored for your global journey. Experience hassle-free documentation with our expert team.
               </p>
-              <div className="mt-4">
-                <Link href="/services" className="btn btn-light btn-lg rounded-pill px-4 fw-bold text-primary shadow">
-                  Explore Services <i className="fas fa-arrow-right ms-2"></i>
+              <div>
+                <Link href="/services" className="btn-premium">
+                  <span className="btn-premium-inner">
+                    Explore Our Services
+                    <span className="btn-icon-wrapper">
+                      <i className="fas fa-arrow-right"></i>
+                    </span>
+                  </span>
                 </Link>
               </div>
             </div>
             
             <div className="col-lg-6">
-              <div style={{ position: 'relative', height: '400px', borderRadius: '30px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)', background: '#1a1a1a' }}>
-                {HERO_SLIDES.map((slide, index) => (
-                  <div 
-                    key={index}
-                    style={{ 
-                      position: 'absolute', 
-                      inset: 0, 
-                      opacity: index === currentSlide ? 1 : 0,
-                      transition: 'opacity 0.8s ease-in-out',
-                      zIndex: index === currentSlide ? 1 : 0
-                    }}
-                  >
-                    <img 
-                      src={slide.url} 
-                      alt={slide.title} 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    <div 
-                      style={{ 
-                        position: 'absolute', 
-                        bottom: '0', 
-                        left: '0', 
-                        right: '0',
-                        padding: '40px 25px 25px',
-                        background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
-                        color: 'white'
-                      }}
-                    >
-                      <h4 style={{ margin: 0, fontWeight: 'bold' }}>{slide.title}</h4>
-                      <p style={{ margin: 0, opacity: 0.8, fontSize: '0.9rem' }}>{slide.description}</p>
+              <div className="hero-visual">
+                <div id="heroCarousel" className="carousel slide visual-card" data-bs-ride="carousel" data-bs-interval="3000" style={{ padding: 0, borderRadius: '32px', overflow: 'hidden', height: '400px' }}>
+                  <div className="carousel-inner h-100">
+                    {HERO_SLIDES.map((slide, index) => (
+                      <div key={index} className={`carousel-item h-100 ${index === 0 ? 'active' : ''}`}>
+                        <img 
+                          src={slide.url} 
+                          alt={slide.title} 
+                          className="d-block w-100 h-100"
+                          style={{ objectFit: 'cover' }}
+                        />
+                        <div className="carousel-caption" style={{ background: 'rgba(0,86,179,0.6)', backdropFilter: 'blur(5px)', borderRadius: '15px', padding: '10px 20px', bottom: '20px', left: '10%', right: '10%' }}>
+                          <h5 className="mb-0 fw-bold">{slide.title}</h5>
+                          <p className="small mb-0 opacity-75">{slide.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Floating Badges (Higher Z-Index) */}
+                  <div className="floating-badge badge-1" style={{ zIndex: 10 }}>
+                    <div className="icon bg-primary-soft p-2 rounded-circle" style={{ background: '#eef6ff' }}>
+                      <i className="fas fa-passport text-primary"></i>
+                    </div>
+                    <div>
+                      <div className="fw-bold small">Global Access</div>
+                      <div className="text-muted smallest" style={{ fontSize: '10px' }}>150+ Countries</div>
                     </div>
                   </div>
-                ))}
-
-                {/* Badges */}
-                <div style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 5, background: 'white', color: 'black', padding: '8px 15px', borderRadius: '15px', display: 'flex', alignItems: 'center', gap: '10px', boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}>
-                   <i className="fas fa-passport text-primary"></i>
-                   <span style={{ fontSize: '0.7rem', fontWeight: 'bold' }}>GLOBAL ACCESS</span>
+                  
+                  <div className="floating-badge badge-2" style={{ zIndex: 10 }}>
+                    <div className="icon bg-success-soft p-2 rounded-circle" style={{ background: '#e6fffa' }}>
+                      <i className="fas fa-check-circle text-success"></i>
+                    </div>
+                    <div>
+                      <div className="fw-bold small">High Success Rate</div>
+                      <div className="text-muted smallest" style={{ fontSize: '10px' }}>Verified Support</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -131,47 +128,82 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features */}
-      <section className="container py-5 my-5">
-        <div className="row g-4 text-center">
-          {[
-            { icon: 'fa-passport', title: 'Visa Processing', text: 'Work, Student, and Medical.' },
-            { icon: 'fa-money-check-alt', title: 'Bank Solvency', text: 'Any amount, any country.' },
-            { icon: 'fa-headset', title: '24/7 Support', text: 'Always here to help you.' }
-          ].map((feature, i) => (
-            <div key={i} className="col-md-4">
-              <div className="p-5 h-100 shadow-sm border-0 rounded-4" style={{ background: '#f8faff' }}>
-                <div className="mb-4 text-primary"><i className={`fas ${feature.icon} fa-3x`}></i></div>
-                <h4 className="fw-bold">{feature.title}</h4>
-                <p className="text-muted">{feature.text}</p>
+      {/* Features Section */}
+      <section className="container my-5 py-5">
+        <div className="row text-center">
+          <div className="col-md-4 mb-4">
+            <div className="card h-100 shadow-sm border-0 p-4" style={{ borderRadius: '24px', background: '#f8faff' }}>
+              <div className="card-body">
+                <div className="bg-white shadow-sm p-3 rounded-circle d-inline-block mb-4">
+                  <i className="fas fa-passport fa-2x text-primary"></i>
+                </div>
+                <h3 className="card-title h4 fw-bold">Visa Processing</h3>
+                <p className="card-text text-muted">Work, Student, and Medical visas for any country worldwide.</p>
+                <Link href="/services" className="btn btn-link text-primary text-decoration-none fw-bold mt-2">
+                  Learn More <i className="fas fa-chevron-right small ms-1"></i>
+                </Link>
               </div>
             </div>
-          ))}
+          </div>
+          <div className="col-md-4 mb-4">
+            <div className="card h-100 shadow-sm border-0 p-4" style={{ borderRadius: '24px', background: '#f8faff' }}>
+              <div className="card-body">
+                <div className="bg-white shadow-sm p-3 rounded-circle d-inline-block mb-4">
+                  <i className="fas fa-money-check-alt fa-2x text-primary"></i>
+                </div>
+                <h3 className="card-title h4 fw-bold">Bank Solvency</h3>
+                <p className="card-text text-muted">Bank solvency support for any required amount to secure your visa.</p>
+                <Link href="/solvency" className="btn btn-link text-primary text-decoration-none fw-bold mt-2">
+                  Learn More <i className="fas fa-chevron-right small ms-1"></i>
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-4 mb-4">
+            <div className="card h-100 shadow-sm border-0 p-4" style={{ borderRadius: '24px', background: '#f8faff' }}>
+              <div className="card-body">
+                <div className="bg-white shadow-sm p-3 rounded-circle d-inline-block mb-4">
+                  <i className="fas fa-headset fa-2x text-primary"></i>
+                </div>
+                <h3 className="card-title h4 fw-bold">24/7 Support</h3>
+                <p className="card-text text-muted">Live chat and dedicated support team ready to assist you anytime.</p>
+                <Link href="/contact" className="btn btn-link text-primary text-decoration-none fw-bold mt-2">
+                  Contact Us <i className="fas fa-chevron-right small ms-1"></i>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Stories */}
-      <section className="container py-5">
-        <h2 className="text-center fw-bold mb-5 text-primary">Success Stories</h2>
-        <div className="row g-4">
+      {/* Visa Success Gallery */}
+      <section className="container my-5 py-5">
+        <h2 className="text-center text-primary mb-5 fw-bold">Our Success Stories</h2>
+        <div className="row" id="visa-gallery">
           {loading ? (
-            <div className="col-12 text-center py-5"><div className="spinner-border text-primary"></div></div>
+            <div className="col-12 text-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
           ) : stories.length > 0 ? (
-            stories.map(s => (
-              <div key={s.id} className="col-md-4">
-                <div className="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                  <img src={s.imageUrl} className="card-img-top" style={{ height: '250px', objectFit: 'cover' }} alt="Visa" />
-                  <div className="card-body text-center bg-primary text-white p-2">
-                    <small className="fw-bold">{s.caption}</small>
+            stories.map(story => (
+              <div key={story.id} className="col-md-4 mb-4">
+                <div className="card h-100 shadow-sm border-0" style={{ borderRadius: '20px', overflow: 'hidden' }}>
+                  <img src={story.imageUrl} className="card-img-top" alt="Visa Success" style={{ height: '300px', objectFit: 'cover' }} />
+                  <div className="card-body p-3 text-center">
+                    <span className="badge bg-primary px-3 py-2 rounded-pill" style={{ fontWeight: '500' }}>{story.caption}</span>
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <div className="col-12 text-center text-muted">No stories yet.</div>
+            <div className="col-12 text-center">
+              <p className="text-muted">No success stories found yet.</p>
+            </div>
           )}
         </div>
       </section>
-    </main>
+    </div>
   );
 }
