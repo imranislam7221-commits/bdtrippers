@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { auth, db, storage } from "@/lib/firebase";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { collection, addDoc, query, where, orderBy, getDocs, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytesResumable } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useRouter } from "next/navigation";
 
 interface Booking {
@@ -72,8 +72,9 @@ export default function Dashboard() {
     setUploadStatus("Uploading...");
 
     const uploadFile = (file: File, type: string) => {
-      return new Promise<void>((resolve, reject) => {
-        const storageRef = ref(storage, `documents/${user.uid}/${type}_${Date.now()}_${file.name}`);
+      return new Promise<string>((resolve, reject) => {
+        const fileName = `${type}_${Date.now()}_${file.name}`;
+        const storageRef = ref(storage, `documents/${user.uid}/${fileName}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
 
         uploadTask.on('state_changed',
@@ -82,17 +83,41 @@ export default function Dashboard() {
             setUploadStatus(`Uploading ${type}: ${Math.round(progress)}%`);
           },
           (error) => reject(error),
-          () => resolve()
+          async () => {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            resolve(downloadURL);
+          }
         );
       });
     };
 
     try {
-      if (passportFile) await uploadFile(passportFile, 'passport');
-      if (photoFile) await uploadFile(photoFile, 'photo');
+      const urls: { type: string; url: string }[] = [];
+      if (passportFile) {
+        const url = await uploadFile(passportFile, 'passport');
+        urls.push({ type: 'passport', url });
+      }
+      if (photoFile) {
+        const url = await uploadFile(photoFile, 'photo');
+        urls.push({ type: 'photo', url });
+      }
+
+      // Save references to Firestore
+      for (const item of urls) {
+        await addDoc(collection(db, 'user_uploads'), {
+          uid: user.uid,
+          userName: user.displayName || "Anonymous",
+          userEmail: user.email,
+          fileUrl: item.url,
+          fileType: item.type,
+          createdAt: serverTimestamp()
+        });
+      }
+
       setUploadStatus("Upload successful!");
-      alert("Documents uploaded successfully!");
+      alert("Documents uploaded and saved successfully!");
     } catch (error: any) {
+      console.error("Upload error:", error);
       setUploadStatus(`Error: ${error.message}`);
     }
   };

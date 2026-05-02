@@ -102,6 +102,11 @@ export default function AdminUpload() {
                 </div>
               ) : (
                 <div id="upload-section">
+                  <div className="text-end mb-3">
+                    <Link href="/admin/inbox" className="btn btn-sm btn-outline-primary">
+                      <i className="fas fa-inbox me-1"></i> Go to Inbox
+                    </Link>
+                  </div>
                   <div className="mb-3">
                     <label className="form-label fw-bold">Select Visa Photo</label>
                     <input
