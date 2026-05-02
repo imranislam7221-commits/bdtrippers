@@ -19,17 +19,17 @@ export default function Home() {
 
   const heroSlides = [
     {
-      url: "https://images.unsplash.com/photo-1523050853063-bd388f85e7ef?q=80&w=1000&auto=format&fit=crop",
+      url: "https://images.unsplash.com/photo-1541339907198-e08759dfc3ef?q=80&w=1200&auto=format&fit=crop",
       title: "Student Visa",
       description: "Secure your future in top foreign universities."
     },
     {
-      url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1000&auto=format&fit=crop",
+      url: "https://images.unsplash.com/photo-1454165833762-01d063990176?q=80&w=1200&auto=format&fit=crop",
       title: "Work Visa",
       description: "Global career opportunities for skilled professionals."
     },
     {
-      url: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1000&auto=format&fit=crop",
+      url: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1200&auto=format&fit=crop",
       title: "Medical Visa",
       description: "Fast-track access to world-class healthcare."
     }
