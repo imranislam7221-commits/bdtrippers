@@ -26,6 +26,8 @@ export default function Footer() {
             <div className="col-md-4 mb-3">
               <h5>BD TRIPPER</h5>
               <p>Your trusted visa processing partner.</p>
+              <p className="small mb-0"><i className="fas fa-map-marker-alt me-1"></i> Motijheel, Dhaka</p>
+              <p className="small mb-0"><i className="fas fa-phone me-1"></i> +880 1735-182024</p>
             </div>
             <div className="col-md-4 mb-3">
               <h5>Quick Links</h5>
@@ -37,9 +39,9 @@ export default function Footer() {
             <div className="col-md-4 mb-3">
               <h5>Follow Us</h5>
               <div className="social-icons">
-                <a href="#"><i className="fab fa-facebook"></i></a>
+                <a href="https://www.facebook.com/bdtrippersltd" target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook"></i></a>
                 <a href="#"><i className="fab fa-instagram"></i></a>
-                <a href="#"><i className="fab fa-whatsapp"></i></a>
+                <a href="https://wa.me/8801735182024" target="_blank" rel="noopener noreferrer"><i className="fab fa-whatsapp"></i></a>
               </div>
             </div>
           </div>
@@ -49,7 +51,7 @@ export default function Footer() {
       </footer>
 
       {/* Floating WhatsApp Button */}
-      <a href="https://wa.me/8801711409601" className="whatsapp-float" target="_blank" rel="noopener noreferrer">
+      <a href="https://wa.me/8801735182024" className="whatsapp-float" target="_blank" rel="noopener noreferrer">
         <i className="fab fa-whatsapp"></i>
       </a>
     </>
