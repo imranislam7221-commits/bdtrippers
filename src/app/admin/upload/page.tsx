@@ -20,15 +20,30 @@ export default function AdminUpload() {
   const handleLogin = async () => {
     if (password === correctPass) {
       try {
-        setStatus({ type: "info", message: "Authenticating..." });
+        setStatus({ type: "info", message: "Step 1: Logging in..." });
         await signInAnonymously(auth);
         setIsLoggedIn(true);
-        setStatus({ type: "success", message: "Ready to upload!" });
+        setStatus({ type: "success", message: "Login Successful! Firebase is ready." });
       } catch (error: any) {
         setStatus({ type: "danger", message: "Auth Error: " + error.message });
       }
     } else {
       alert("Incorrect Password!");
+    }
+  };
+
+  // NEW: Test Database connection only
+  const testDbWrite = async () => {
+    setStatus({ type: "info", message: "Testing Database only (No Photo)..." });
+    try {
+      await addDoc(collection(db, 'success_stories'), {
+        imageUrl: "https://via.placeholder.com/150",
+        caption: "Database Test: " + (caption || "No Caption"),
+        createdAt: serverTimestamp()
+      });
+      setStatus({ type: "success", message: "DATABASE TEST SUCCESS! This means Firebase is reachable." });
+    } catch (error: any) {
+      setStatus({ type: "danger", message: "Database Failed: " + error.message });
     }
   };
 
@@ -39,27 +54,23 @@ export default function AdminUpload() {
     }
 
     setUploading(true);
-    setStatus({ type: "info", message: "Step 2: Preparing photo..." });
+    setStatus({ type: "info", message: "Step 2: Preparing and Sending..." });
 
     try {
-      // Step 2: Convert to Base64
       const reader = new FileReader();
-      const base64Promise = new Promise<string>((resolve, reject) => {
+      const base64String = await new Promise<string>((resolve, reject) => {
         reader.onload = () => resolve(reader.result as string);
         reader.onerror = reject;
         reader.readAsDataURL(file);
       });
 
-      const base64String = await base64Promise;
-      setStatus({ type: "info", message: "Step 3: Sending data..." });
-
       const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, uniqueName);
       
-      // Step 3: Direct String Upload
+      // Attempt String Upload
       await uploadString(storageRef, base64String, 'data_url');
       
-      setStatus({ type: "info", message: "Step 4: Saving to website..." });
+      setStatus({ type: "info", message: "Step 3: Finalizing..." });
       const downloadURL = await getDownloadURL(storageRef);
 
       await addDoc(collection(db, 'success_stories'), {
@@ -68,12 +79,12 @@ export default function AdminUpload() {
         createdAt: serverTimestamp()
       });
 
-      setStatus({ type: "success", message: "Success! Photo uploaded." });
+      setStatus({ type: "success", message: "PHOTO UPLOADED SUCCESSFULLY!" });
       setFile(null);
       setCaption("");
     } catch (error: any) {
-      console.error("Upload process failure:", error);
-      setStatus({ type: "danger", message: "Failed: " + error.message });
+      console.error("Final Upload Error:", error);
+      setStatus({ type: "danger", message: `Failed: ${error.message}` });
     } finally {
       setUploading(false);
     }
@@ -89,34 +100,34 @@ export default function AdminUpload() {
             </div>
             <div className="card-body p-4">
               {status.message && (
-                <div className={`alert alert-${status.type}`}>{status.message}</div>
+                <div className={`alert alert-${status.type} small`}>{status.message}</div>
               )}
 
               {!isLoggedIn ? (
                 <div>
-                  <input
-                    type="password"
-                    className="form-control mb-3"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <button onClick={handleLogin} className="btn btn-primary w-100 fw-bold">Login</button>
+                  <input type="password" title="password" className="form-control mb-3" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <button onClick={handleLogin} className="btn btn-primary w-100 fw-bold">Login to Admin</button>
                 </div>
               ) : (
                 <div>
-                  <div className="text-end mb-3"><Link href="/admin/inbox" className="btn btn-sm btn-link">Admin Inbox</Link></div>
+                  <div className="text-end mb-3"><Link href="/admin/inbox" className="btn btn-sm btn-outline-primary">Go to Inbox</Link></div>
                   <div className="mb-3">
                     <label className="form-label small fw-bold">Select Image</label>
-                    <input type="file" className="form-control" onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)} />
+                    <input type="file" title="file" className="form-control" onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)} />
                   </div>
                   <div className="mb-3">
                     <label className="form-label small fw-bold">Caption</label>
-                    <input type="text" className="form-control" placeholder="e.g. USA Visa" value={caption} onChange={(e) => setCaption(e.target.value)} />
+                    <input type="text" title="caption" className="form-control" placeholder="e.g. Canada Visa" value={caption} onChange={(e) => setCaption(e.target.value)} />
                   </div>
-                  <button disabled={uploading} onClick={handleUpload} className="btn btn-success w-100 fw-bold">
-                    {uploading ? "Processing..." : "Start Upload"}
-                  </button>
+                  
+                  <div className="d-grid gap-2">
+                    <button disabled={uploading} onClick={handleUpload} className="btn btn-success fw-bold">
+                      {uploading ? "Uploading..." : "Upload Photo"}
+                    </button>
+                    <button disabled={uploading} onClick={testDbWrite} className="btn btn-outline-secondary btn-sm">
+                      Test Database Only (No Photo)
+                    </button>
+                  </div>
                 </div>
               )}
               <div className="text-center mt-3"><Link href="/" className="small text-muted">Back to Site</Link></div>
