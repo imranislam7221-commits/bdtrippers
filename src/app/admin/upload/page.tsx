@@ -43,15 +43,12 @@ export default function AdminUpload() {
     setStatus({ type: "info", message: "Uploading photo... Please wait." });
 
     try {
-      // Create a clean file name
       const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, uniqueName);
       
-      // Direct upload (Non-resumable for stability)
       const snapshot = await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(snapshot.ref);
 
-      // Save to Firestore
       await addDoc(collection(db, 'success_stories'), {
         imageUrl: downloadURL,
         caption: caption,
@@ -129,17 +126,8 @@ export default function AdminUpload() {
                     className="btn btn-success w-100 fw-bold py-2"
                   >
                     <i className="fas fa-cloud-upload-alt me-1"></i>
-                    {uploading ? `Uploading... ${Math.round(progress)}%` : "Upload to Firebase"}
+                    {uploading ? "Uploading..." : "Upload to Firebase"}
                   </button>
-                  {uploading && (
-                    <div className="progress mt-3">
-                      <div
-                        className="progress-bar progress-bar-striped progress-bar-animated"
-                        role="progressbar"
-                        style={{ width: `${progress}%` }}
-                      ></div>
-                    </div>
-                  )}
                 </div>
               )}
 
