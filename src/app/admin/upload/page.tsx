@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { db, storage, auth } from "@/lib/firebase";
+import { db, storage, auth } from "../../../lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { signInAnonymously } from "firebase/auth";
