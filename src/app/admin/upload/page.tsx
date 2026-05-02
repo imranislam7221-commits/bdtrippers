@@ -132,18 +132,18 @@ export default function AdminUpload() {
                     onClick={handleUpload}
                     className="btn btn-success w-100 fw-bold py-2"
                   >
-                    <i className="fas fa-cloud-upload-alt me-1"></i>
-                    {uploading ? `Uploading... ${progress}%` : "Upload to Firebase"}
+                    {uploading ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Uploading Photo...
+                      </>
+                    ) : (
+                      <>
+                        <i className="fas fa-cloud-upload-alt me-1"></i>
+                        Upload to Firebase
+                      </>
+                    )}
                   </button>
-                  {uploading && (
-                    <div className="progress mt-3">
-                      <div
-                        className="progress-bar progress-bar-striped progress-bar-animated"
-                        role="progressbar"
-                        style={{ width: `${progress}%` }}
-                      ></div>
-                    </div>
-                  )}
                 </div>
               )}
 
