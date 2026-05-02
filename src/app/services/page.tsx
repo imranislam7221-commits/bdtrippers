@@ -46,6 +46,27 @@ export default function Services() {
 
       <hr />
 
+      {/* Hajj & Umrah */}
+      <div className="row mb-5 align-items-center">
+        <div className="col-md-6 order-md-2">
+          <h2><i className="fas fa-kaaba text-primary"></i> Hajj & Umrah</h2>
+          <p>We offer specialized Hajj and Umrah packages with complete guidance and support. From visa processing to hotel bookings near the Haram, we ensure a spiritually fulfilling and hassle-free pilgrimage for you and your family.</p>
+          <ul className="list-group list-group-flush mb-3">
+            <li className="list-group-item"><i className="fas fa-check text-success"></i> Premium Hotel Booking</li>
+            <li className="list-group-item"><i className="fas fa-check text-success"></i> Guided Religious Tours</li>
+            <li className="list-group-item"><i className="fas fa-check text-success"></i> Group Visa Support</li>
+          </ul>
+        </div>
+        <div className="col-md-6 order-md-1 text-center">
+          <div className="p-5 bg-light rounded border border-primary">
+            <h4>Pilgrimage Support</h4>
+            <p>Comprehensive Hajj & Umrah packages for every budget.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
       {/* Medical Visa */}
       <div className="row mt-5 align-items-center">
         <div className="col-md-6">

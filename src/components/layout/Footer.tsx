@@ -49,7 +49,7 @@ export default function Footer() {
       </footer>
 
       {/* Floating WhatsApp Button */}
-      <a href="https://wa.me/8801753599539" className="whatsapp-float" target="_blank" rel="noopener noreferrer">
+      <a href="https://wa.me/8801711409601" className="whatsapp-float" target="_blank" rel="noopener noreferrer">
         <i className="fab fa-whatsapp"></i>
       </a>
     </>

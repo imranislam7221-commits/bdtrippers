@@ -42,10 +42,10 @@ export default function Contact() {
               <p>Have questions about visas or bank solvency? Reach out to us!</p>
 
               <ul className="list-unstyled mt-4">
-                <li className="mb-3"><i className="fas fa-map-marker-alt text-primary me-2"></i> House # 90/B (1st Floor), Shiddheswari New Circular, Dhaka-1217, Bangladesh</li>
-                <li className="mb-3"><i className="fas fa-phone text-primary me-2"></i> +88 01753599539</li>
-                <li className="mb-3"><i className="fas fa-envelope text-primary me-2"></i> info@tripper-bd.com</li>
-                <li className="mb-3"><i className="fab fa-whatsapp text-success me-2"></i> +8801753599539</li>
+                <li className="mb-3"><i className="fas fa-map-marker-alt text-primary me-2"></i> House # 11, Road # 12, Sector # 01, Uttara, Dhaka, Bangladesh</li>
+                <li className="mb-3"><i className="fas fa-phone text-primary me-2"></i> +880 1711-409601</li>
+                <li className="mb-3"><i className="fas fa-envelope text-primary me-2"></i> bdtrippers@gmail.com</li>
+                <li className="mb-3"><i className="fab fa-whatsapp text-success me-2"></i> +880 1711-409601</li>
               </ul>
             </div>
           </div>
