@@ -121,7 +121,7 @@ export default function Header() {
         </div>
 
         <button 
-          className="navbar-toggler border-0 shadow-none px-2 d-lg-none" 
+          className="navbar-toggler border-0 shadow-none px-2 d-lg-none ms-2" 
           type="button" 
           onClick={toggleNav}
         >
