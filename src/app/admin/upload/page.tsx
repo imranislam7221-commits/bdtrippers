@@ -29,33 +29,40 @@ export default function AdminUpload() {
     }
   };
 
-  const handleUpload = async () => {
+    const handleUpload = async () => {
     if (!file || !caption) return alert("Select file and caption");
     setUploading(true);
-    setStatus({ type: "info", message: "Processing Upload..." });
+    setStatus({ type: "info", message: "Step 1: Preparing Image..." });
 
     try {
       const fileName = `stories/${Date.now()}.png`;
       const storageRef = ref(storage, fileName);
       
-      // Step 1: Upload
-      const snapshot = await uploadBytes(storageRef, file);
+      setStatus({ type: "info", message: "Step 2: Sending directly to Firebase (Waiting 20s)..." });
       
-      // Step 2: URL
-      const url = await getDownloadURL(snapshot.ref);
+      // Failsafe Timeout
+      const uploadTask = uploadBytes(storageRef, file);
+      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT")), 20000));
+      
+      await Promise.race([uploadTask, timeout]);
+      
+      setStatus({ type: "info", message: "Step 3: Saving metadata..." });
+      const url = await getDownloadURL(storageRef);
 
-      // Step 3: Save
       await addDoc(collection(db, 'success_stories'), {
         imageUrl: url,
         caption: caption,
         createdAt: serverTimestamp()
       });
 
-      setStatus({ type: "success", message: "ALHAMDULILLAH! UPLOAD DONE!" });
+      setStatus({ type: "success", message: "ALHAMDULILLAH! UPLOAD SUCCESS!" });
       setFile(null);
       setCaption("");
     } catch (err: any) {
-      setStatus({ type: "danger", message: "Error: " + err.message });
+      console.error("Critical Failure:", err);
+      let msg = "Failed: " + err.message;
+      if (err.message === "TIMEOUT") msg = "Network Blocked! Try using a different browser or VPN.";
+      setStatus({ type: "danger", message: msg });
     } finally {
       setUploading(false);
     }
