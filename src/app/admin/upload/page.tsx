@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { db, storage } from "@/lib/firebase";
+import { db, storage, auth } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { signInAnonymously } from "firebase/auth";
 
 export default function AdminUpload() {
   const [password, setPassword] = useState("");
@@ -17,10 +18,16 @@ export default function AdminUpload() {
 
   const correctPass = "siam123";
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (password === correctPass) {
-      setIsLoggedIn(true);
-      setStatus({ type: "info", message: "Welcome, Admin!" });
+      try {
+        await signInAnonymously(auth);
+        setIsLoggedIn(true);
+        setStatus({ type: "info", message: "Welcome, Admin! (Authenticated)" });
+      } catch (error: any) {
+        console.error("Auth error:", error);
+        alert("Authentication failed: " + error.message);
+      }
     } else {
       alert("Incorrect Password!");
     }
