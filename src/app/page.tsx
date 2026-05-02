@@ -15,32 +15,6 @@ interface SuccessStory {
 export default function Home() {
   const [stories, setStories] = useState<SuccessStory[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const heroSlides = [
-    {
-      url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1200&auto=format&fit=crop",
-      title: "Work Visa Support",
-      description: "Global career opportunities for skilled professionals."
-    },
-    {
-      url: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200&auto=format&fit=crop",
-      title: "Student Visa Processing",
-      description: "Secure your future in top foreign universities."
-    },
-    {
-      url: "https://images.unsplash.com/photo-1505751172107-5739a007351e?q=80&w=1200&auto=format&fit=crop",
-      title: "Medical Visa Assistance",
-      description: "Fast-track access to world-class healthcare."
-    }
-  ];
-
-  useEffect(() => {
-    const slideInterval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(slideInterval);
-  }, [heroSlides.length]);
 
   useEffect(() => {
     async function loadSuccessStories() {
@@ -91,46 +65,47 @@ export default function Home() {
             
             <div className="col-lg-6">
               <div className="hero-visual fade-up delay-200">
-                <div className="visual-card" style={{ height: '400px', position: 'relative', overflow: 'hidden', borderRadius: '32px' }}>
-                  {heroSlides.map((slide, index) => (
-                    <div 
-                      key={index}
-                      style={{ 
-                        position: 'absolute', 
-                        inset: 0, 
-                        opacity: index === currentSlide ? 1 : 0,
-                        transition: 'opacity 1s ease-in-out',
-                        zIndex: index === currentSlide ? 1 : 0
-                      }}
-                    >
+                <div id="heroCarousel" className="carousel slide visual-card" data-bs-ride="carousel" data-bs-interval="3000" style={{ padding: 0, borderRadius: '32px', overflow: 'hidden', height: '400px' }}>
+                  <div className="carousel-inner h-100">
+                    <div className="carousel-item active h-100">
                       <img 
-                        src={slide.url} 
-                        alt={slide.title} 
-                        className="img-fluid"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1200&auto=format&fit=crop" 
+                        alt="Work Visa" 
+                        className="d-block w-100 h-100"
+                        style={{ objectFit: 'cover' }}
                       />
-                      <div 
-                        style={{ 
-                          position: 'absolute', 
-                          bottom: '20px', 
-                          left: '20px', 
-                          right: '20px',
-                          background: 'rgba(0,86,179,0.7)',
-                          backdropFilter: 'blur(10px)',
-                          padding: '15px',
-                          borderRadius: '15px',
-                          color: 'white',
-                          border: '1px solid rgba(255,255,255,0.1)',
-                          zIndex: 2
-                        }}
-                      >
-                        <h4 className="mb-1" style={{ fontSize: '1.2rem', fontWeight: '700' }}>{slide.title}</h4>
-                        <p className="small mb-0 opacity-75">{slide.description}</p>
+                      <div className="carousel-caption" style={{ background: 'rgba(0,86,179,0.6)', backdropFilter: 'blur(5px)', borderRadius: '15px', padding: '10px 20px', bottom: '20px', left: '10%', right: '10%' }}>
+                        <h5 className="mb-0 fw-bold">Work Visa Support</h5>
+                        <p className="small mb-0 opacity-75">Global career opportunities.</p>
                       </div>
                     </div>
-                  ))}
-                  
-                  {/* Floating Badges */}
+                    <div className="carousel-item h-100">
+                      <img 
+                        src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200&auto=format&fit=crop" 
+                        alt="Student Visa" 
+                        className="d-block w-100 h-100"
+                        style={{ objectFit: 'cover' }}
+                      />
+                      <div className="carousel-caption" style={{ background: 'rgba(0,86,179,0.6)', backdropFilter: 'blur(5px)', borderRadius: '15px', padding: '10px 20px', bottom: '20px', left: '10%', right: '10%' }}>
+                        <h5 className="mb-0 fw-bold">Student Visa Processing</h5>
+                        <p className="small mb-0 opacity-75">Secure your future abroad.</p>
+                      </div>
+                    </div>
+                    <div className="carousel-item h-100">
+                      <img 
+                        src="https://images.unsplash.com/photo-1505751172107-5739a007351e?q=80&w=1200&auto=format&fit=crop" 
+                        alt="Medical Visa" 
+                        className="d-block w-100 h-100"
+                        style={{ objectFit: 'cover' }}
+                      />
+                      <div className="carousel-caption" style={{ background: 'rgba(0,86,179,0.6)', backdropFilter: 'blur(5px)', borderRadius: '15px', padding: '10px 20px', bottom: '20px', left: '10%', right: '10%' }}>
+                        <h5 className="mb-0 fw-bold">Medical Visa Assistance</h5>
+                        <p className="small mb-0 opacity-75">Access to world-class healthcare.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Floating Badges (Higher Z-Index) */}
                   <div className="floating-badge badge-1" style={{ zIndex: 10 }}>
                     <div className="icon bg-primary-soft p-2 rounded-circle" style={{ background: '#eef6ff' }}>
                       <i className="fas fa-passport text-primary"></i>
