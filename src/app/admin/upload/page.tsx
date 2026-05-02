@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { db, storage, auth } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { signInAnonymously } from "firebase/auth";
 
 export default function AdminUpload() {
@@ -13,7 +13,6 @@ export default function AdminUpload() {
   const [file, setFile] = useState<File | null>(null);
   const [caption, setCaption] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState({ type: "", message: "" });
 
   const correctPass = "siam123";
@@ -21,12 +20,13 @@ export default function AdminUpload() {
   const handleLogin = async () => {
     if (password === correctPass) {
       try {
+        setStatus({ type: "info", message: "Authenticating..." });
         await signInAnonymously(auth);
         setIsLoggedIn(true);
-        setStatus({ type: "info", message: "Welcome, Admin! (Authenticated)" });
+        setStatus({ type: "success", message: "Login Successful! You can now upload." });
       } catch (error: any) {
         console.error("Auth error:", error);
-        alert("Authentication failed: " + error.message);
+        setStatus({ type: "danger", message: "Authentication failed: " + error.message });
       }
     } else {
       alert("Incorrect Password!");
@@ -40,54 +40,31 @@ export default function AdminUpload() {
     }
 
     setUploading(true);
-    setStatus({ type: "info", message: "Starting upload... Please wait." });
-
-    // Timeout to detect stuck upload
-    const timeoutId = setTimeout(() => {
-      if (progress === 0 && uploading) {
-        setStatus({ type: "danger", message: "Upload seems stuck at 0%. Please check if Firebase Storage is enabled and Rules are set to Public." });
-        setUploading(false);
-      }
-    }, 15000);
+    setStatus({ type: "info", message: "Uploading photo... Please wait." });
 
     try {
+      // Create a clean file name
       const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, uniqueName);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      
+      // Direct upload (Non-resumable for stability)
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
 
-      uploadTask.on('state_changed',
-        (snapshot) => {
-          const progressValue = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          setProgress(progressValue);
-          if (progressValue > 0) clearTimeout(timeoutId);
-          setStatus({ type: "info", message: `Uploading: ${progressValue}%...` });
-        },
-        (error) => {
-          clearTimeout(timeoutId);
-          console.error("Critical Upload Error:", error);
-          setStatus({ type: "danger", message: `Error: ${error.message}` });
-          setUploading(false);
-        },
-        async () => {
-          clearTimeout(timeoutId);
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          await addDoc(collection(db, 'success_stories'), {
-            imageUrl: downloadURL,
-            caption: caption,
-            createdAt: serverTimestamp()
-          });
+      // Save to Firestore
+      await addDoc(collection(db, 'success_stories'), {
+        imageUrl: downloadURL,
+        caption: caption,
+        createdAt: serverTimestamp()
+      });
 
-          setStatus({ type: "success", message: "Success! Photo is now live." });
-          setUploading(false);
-          setFile(null);
-          setCaption("");
-          setProgress(0);
-        }
-      );
+      setStatus({ type: "success", message: "Photo uploaded and live successfully!" });
+      setFile(null);
+      setCaption("");
     } catch (error: any) {
-      clearTimeout(timeoutId);
-      console.error("System Failure:", error);
-      setStatus({ type: "danger", message: `System Error: ${error.message}` });
+      console.error("Upload Error:", error);
+      setStatus({ type: "danger", message: `Upload Failed: ${error.message}` });
+    } finally {
       setUploading(false);
     }
   };
