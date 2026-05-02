@@ -13,7 +13,6 @@ export default function AdminUpload() {
   const [file, setFile] = useState<File | null>(null);
   const [caption, setCaption] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState({ type: "", message: "" });
 
   const correctPass = "siam123";
@@ -41,18 +40,23 @@ export default function AdminUpload() {
     }
 
     setUploading(true);
-    setProgress(0);
-    setStatus({ type: "info", message: "Step 2: Connecting to Firebase..." });
+    setStatus({ type: "info", message: "Step 2: Connecting and uploading photo... (Max 30s)" });
+
+    const timeoutId = setTimeout(() => {
+      if (uploading) {
+        setStatus({ type: "danger", message: "Upload Timeout: Firebase Storage is taking too long to respond. Please check your internet or Firebase Rules." });
+        setUploading(false);
+      }
+    }, 30000);
 
     try {
       const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, uniqueName);
       
-      // Direct Upload for better stability
-      setStatus({ type: "info", message: "Step 3: Sending photo... (Please wait 10-20 seconds)" });
       const snapshot = await uploadBytes(storageRef, file);
+      clearTimeout(timeoutId);
       
-      setStatus({ type: "info", message: "Step 4: Finalizing..." });
+      setStatus({ type: "info", message: "Step 3: Saving to website..." });
       const downloadURL = await getDownloadURL(snapshot.ref);
 
       await addDoc(collection(db, 'success_stories'), {
@@ -61,13 +65,16 @@ export default function AdminUpload() {
         createdAt: serverTimestamp()
       });
 
-      setStatus({ type: "success", message: "Success! Photo is now live on the website." });
+      setStatus({ type: "success", message: "Photo uploaded and live successfully!" });
       setFile(null);
       setCaption("");
-      setProgress(0);
     } catch (error: any) {
-      console.error("Final Error:", error);
-      setStatus({ type: "danger", message: `Failed at Step 3: ${error.message}` });
+      clearTimeout(timeoutId);
+      console.error("Critical Upload Failure:", error);
+      let errorMsg = `Upload Failed: ${error.message}`;
+      if (error.code === 'storage/unauthorized') errorMsg = "Permission Denied! Check Storage Rules.";
+      if (error.code === 'storage/retry-limit-exceeded') errorMsg = "Network Error! Try a smaller photo or VPN.";
+      setStatus({ type: "danger", message: errorMsg });
     } finally {
       setUploading(false);
     }
