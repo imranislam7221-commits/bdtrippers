@@ -8,6 +8,8 @@ import Image from "next/image";
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -44,6 +46,9 @@ export default function Header() {
     }
   };
 
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+  const toggleNav = () => setIsNavOpen(!isNavOpen);
+
   return (
     <nav className="navbar navbar-expand-lg custom-navbar sticky-top shadow-sm">
       <div className="container d-flex justify-content-between">
@@ -51,54 +56,62 @@ export default function Header() {
           BD <span className="fw-light">TRIPPER</span>
         </Link>
 
-        <div className="collapse navbar-collapse flex-grow-0" id="navbarNav">
+        <div className={`collapse navbar-collapse flex-grow-0 ${isNavOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav align-items-center">
             <li className="nav-item">
-              <Link className="nav-link custom-link" href="/">Home</Link>
+              <Link className="nav-link custom-link" href="/" onClick={() => setIsNavOpen(false)}>Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link custom-link" href="/services">Visa Services</Link>
+              <Link className="nav-link custom-link" href="/services" onClick={() => setIsNavOpen(false)}>Visa Services</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link custom-link" href="/solvency">Bank Solvency</Link>
+              <Link className="nav-link custom-link" href="/solvency" onClick={() => setIsNavOpen(false)}>Bank Solvency</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link custom-link" href="/admin/upload">Admin Panel</Link>
+              <Link className="nav-link custom-link" href="/admin/upload" onClick={() => setIsNavOpen(false)}>Admin Panel</Link>
             </li>
             <li className="nav-item ms-lg-3 mt-3 mt-lg-0 w-100 w-lg-auto text-center">
-              <Link className="btn custom-btn-white rounded-pill px-4" href="/contact">Contact Us</Link>
+              <Link className="btn custom-btn-white rounded-pill px-4" href="/contact" onClick={() => setIsNavOpen(false)}>Contact Us</Link>
             </li>
           </ul>
         </div>
 
         <div className="ms-auto d-flex align-items-center me-3" id="auth-btn-container">
           {user ? (
-            <div className="dropdown">
-              <button className="btn btn-outline-primary dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown">
+            <div className={`dropdown ${isDropdownOpen ? 'show' : ''}`}>
+              <button 
+                className="btn btn-outline-primary dropdown-toggle rounded-pill" 
+                type="button" 
+                onClick={toggleDropdown}
+              >
                 {user.photoURL && (
                   <img src={user.photoURL} alt={user.displayName || "User"} width="25" className="rounded-circle me-1" />
                 )}
                 {user.displayName?.split(" ")[0] || "User"}
               </button>
-              <ul className="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                <li><Link className="dropdown-item" href="/dashboard">Dashboard</Link></li>
+              <ul className={`dropdown-menu dropdown-menu-end shadow border-0 mt-2 ${isDropdownOpen ? 'show' : ''}`} style={{ position: isDropdownOpen ? 'absolute' : 'static', right: 0 }}>
+                <li><Link className="dropdown-item" href="/dashboard" onClick={() => setIsDropdownOpen(false)}>Dashboard</Link></li>
                 <li><hr className="dropdown-divider" /></li>
-                <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+                <li><button className="dropdown-item" onClick={() => { handleLogout(); setIsDropdownOpen(false); }}>Logout</button></li>
               </ul>
             </div>
           ) : (
-            <div className="dropdown">
-              <button className="btn btn-primary rounded-pill px-3 px-md-4 dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <div className={`dropdown ${isDropdownOpen ? 'show' : ''}`}>
+              <button 
+                className="btn btn-primary rounded-pill px-3 px-md-4 dropdown-toggle" 
+                type="button" 
+                onClick={toggleDropdown}
+              >
                 <i className="fas fa-sign-in-alt me-1"></i> Login
               </button>
-              <ul className="dropdown-menu dropdown-menu-end shadow border-0 mt-2" aria-labelledby="loginDropdown">
+              <ul className={`dropdown-menu dropdown-menu-end shadow border-0 mt-2 ${isDropdownOpen ? 'show' : ''}`} style={{ position: isDropdownOpen ? 'absolute' : 'static', right: 0 }}>
                 <li>
-                  <button className="dropdown-item py-2" onClick={loginWithGoogle}>
+                  <button className="dropdown-item py-2" onClick={() => { loginWithGoogle(); setIsDropdownOpen(false); }}>
                     <i className="fab fa-google text-danger me-2"></i> Login with Google
                   </button>
                 </li>
                 <li>
-                  <button className="dropdown-item py-2" onClick={loginWithFacebook}>
+                  <button className="dropdown-item py-2" onClick={() => { loginWithFacebook(); setIsDropdownOpen(false); }}>
                     <i className="fab fa-facebook-f text-primary me-2" style={{ color: "#1877F2" }}></i> Login with Facebook
                   </button>
                 </li>
@@ -107,7 +120,11 @@ export default function Header() {
           )}
         </div>
 
-        <button className="navbar-toggler border-0 shadow-none px-2 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button 
+          className="navbar-toggler border-0 shadow-none px-2 d-lg-none" 
+          type="button" 
+          onClick={toggleNav}
+        >
           <i className="fa-solid fa-ellipsis-vertical fs-2"></i>
         </button>
       </div>
