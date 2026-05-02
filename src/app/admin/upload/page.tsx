@@ -47,42 +47,28 @@ export default function AdminUpload() {
     try {
       const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, uniqueName);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      
+      // Direct Upload for better stability
+      setStatus({ type: "info", message: "Step 3: Sending photo... (Please wait 10-20 seconds)" });
+      const snapshot = await uploadBytes(storageRef, file);
+      
+      setStatus({ type: "info", message: "Step 4: Finalizing..." });
+      const downloadURL = await getDownloadURL(snapshot.ref);
 
-      uploadTask.on('state_changed',
-        (snapshot) => {
-          const progressValue = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          setProgress(progressValue);
-          setStatus({ 
-            type: "info", 
-            message: `Step 3: Uploading Image (${progressValue}%). ${progressValue === 0 ? "Wait, if it stays at 0%, try a smaller photo or VPN." : ""}` 
-          });
-        },
-        (error) => {
-          console.error("Upload Error:", error);
-          setStatus({ type: "danger", message: `Upload Failed: ${error.message}. (Check Firebase Storage Rules)` });
-          setUploading(false);
-        },
-        async () => {
-          setStatus({ type: "info", message: "Step 4: Saving to Database..." });
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+      await addDoc(collection(db, 'success_stories'), {
+        imageUrl: downloadURL,
+        caption: caption,
+        createdAt: serverTimestamp()
+      });
 
-          await addDoc(collection(db, 'success_stories'), {
-            imageUrl: downloadURL,
-            caption: caption,
-            createdAt: serverTimestamp()
-          });
-
-          setStatus({ type: "success", message: "Success! Photo is now live on the website." });
-          setUploading(false);
-          setFile(null);
-          setCaption("");
-          setProgress(0);
-        }
-      );
+      setStatus({ type: "success", message: "Success! Photo is now live on the website." });
+      setFile(null);
+      setCaption("");
+      setProgress(0);
     } catch (error: any) {
-      console.error("System Failure:", error);
-      setStatus({ type: "danger", message: `System Error: ${error.message}` });
+      console.error("Final Error:", error);
+      setStatus({ type: "danger", message: `Failed at Step 3: ${error.message}` });
+    } finally {
       setUploading(false);
     }
   };
