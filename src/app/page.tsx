@@ -15,6 +15,32 @@ interface SuccessStory {
 export default function Home() {
   const [stories, setStories] = useState<SuccessStory[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const heroSlides = [
+    {
+      url: "https://images.unsplash.com/photo-1523050853063-bd388f85e7ef?q=80&w=1000&auto=format&fit=crop",
+      title: "Student Visa",
+      description: "Secure your future in top foreign universities."
+    },
+    {
+      url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1000&auto=format&fit=crop",
+      title: "Work Visa",
+      description: "Global career opportunities for skilled professionals."
+    },
+    {
+      url: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1000&auto=format&fit=crop",
+      title: "Medical Visa",
+      description: "Fast-track access to world-class healthcare."
+    }
+  ];
+
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(slideInterval);
+  }, []);
 
   useEffect(() => {
     async function loadSuccessStories() {
@@ -43,15 +69,15 @@ export default function Home() {
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-6 mb-5 mb-lg-0 text-start">
-              <span className="hero-eyebrow">Trusted Travel Partner</span>
-              <h1 className="hero-title">
+              <span className="hero-eyebrow fade-up">Trusted Travel Partner</span>
+              <h1 className="hero-title fade-up delay-100">
                 Travel with <br />
                 <span style={{ fontStyle: 'italic' }}>Ease & Confidence</span>
               </h1>
-              <p className="hero-lead">
+              <p className="hero-lead fade-up delay-200">
                 Premium Visa Processing and Bank Solvency support tailored for your global journey. Experience hassle-free documentation with our expert team.
               </p>
-              <div>
+              <div className="fade-up delay-300">
                 <Link href="/services" className="btn-premium">
                   <span className="btn-premium-inner">
                     Explore Our Services
@@ -65,16 +91,47 @@ export default function Home() {
             
             <div className="col-lg-6">
               <div className="hero-visual">
-                <div className="visual-card">
-                  <img 
-                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000&auto=format&fit=crop" 
-                    alt="Travel Hero" 
-                    className="img-fluid rounded-4 shadow-sm"
-                    style={{ width: '100%', height: '400px', objectFit: 'cover' }}
-                  />
+                <div className="visual-card" style={{ height: '450px' }}>
+                  {heroSlides.map((slide, index) => (
+                    <div 
+                      key={index}
+                      className={`hero-slide ${index === currentSlide ? 'active' : ''}`}
+                      style={{ 
+                        position: 'absolute', 
+                        inset: 0, 
+                        opacity: index === currentSlide ? 1 : 0,
+                        transition: 'opacity 1s ease-in-out',
+                        zIndex: index === currentSlide ? 1 : 0
+                      }}
+                    >
+                      <img 
+                        src={slide.url} 
+                        alt={slide.title} 
+                        className="img-fluid"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                      <div 
+                        style={{ 
+                          position: 'absolute', 
+                          bottom: '20px', 
+                          left: '20px', 
+                          right: '20px',
+                          background: 'rgba(0,0,0,0.4)',
+                          backdropFilter: 'blur(10px)',
+                          padding: '15px',
+                          borderRadius: '15px',
+                          color: 'white',
+                          border: '1px solid rgba(255,255,255,0.1)'
+                        }}
+                      >
+                        <h4 className="mb-1" style={{ fontSize: '1.2rem', fontWeight: '700' }}>{slide.title}</h4>
+                        <p className="small mb-0 opacity-75">{slide.description}</p>
+                      </div>
+                    </div>
+                  ))}
                   
-                  {/* Floating Badges */}
-                  <div className="floating-badge badge-1">
+                  {/* Floating Badges (Fixed position) */}
+                  <div className="floating-badge badge-1" style={{ zIndex: 10 }}>
                     <div className="icon bg-primary-soft p-2 rounded-circle" style={{ background: '#eef6ff' }}>
                       <i className="fas fa-passport text-primary"></i>
                     </div>
@@ -84,7 +141,7 @@ export default function Home() {
                     </div>
                   </div>
                   
-                  <div className="floating-badge badge-2">
+                  <div className="floating-badge badge-2" style={{ zIndex: 10 }}>
                     <div className="icon bg-success-soft p-2 rounded-circle" style={{ background: '#e6fffa' }}>
                       <i className="fas fa-check-circle text-success"></i>
                     </div>
