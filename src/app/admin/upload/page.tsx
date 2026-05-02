@@ -54,7 +54,7 @@ export default function AdminUpload() {
     }
 
     setUploading(true);
-    setStatus({ type: "info", message: "Step 2: Preparing and Sending..." });
+    setStatus({ type: "info", message: "Step 2: Preparing Photo (Base64)..." });
 
     try {
       const reader = new FileReader();
@@ -64,26 +64,28 @@ export default function AdminUpload() {
         reader.readAsDataURL(file);
       });
 
+      setStatus({ type: "info", message: "Step 2.1: Opening secure stream..." });
       const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, uniqueName);
       
-      // Attempt String Upload
+      setStatus({ type: "info", message: "Step 2.2: Pushing data directly to Firebase (Please wait 15s)..." });
       await uploadString(storageRef, base64String, 'data_url');
       
-      setStatus({ type: "info", message: "Step 3: Finalizing..." });
+      setStatus({ type: "info", message: "Step 3: Generating link..." });
       const downloadURL = await getDownloadURL(storageRef);
 
+      setStatus({ type: "info", message: "Step 4: Updating Website..." });
       await addDoc(collection(db, 'success_stories'), {
         imageUrl: downloadURL,
         caption: caption,
         createdAt: serverTimestamp()
       });
 
-      setStatus({ type: "success", message: "PHOTO UPLOADED SUCCESSFULLY!" });
+      setStatus({ type: "success", message: "ALHAMDULILLAH! PHOTO UPLOADED SUCCESSFULLY!" });
       setFile(null);
       setCaption("");
     } catch (error: any) {
-      console.error("Final Upload Error:", error);
+      console.error("Direct Upload Error:", error);
       setStatus({ type: "danger", message: `Failed: ${error.message}` });
     } finally {
       setUploading(false);
