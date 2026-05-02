@@ -40,31 +40,37 @@ body {
 .delay-200 { animation-delay: 0.2s; }
 .delay-300 { animation-delay: 0.3s; }
 
-/* Hero Section V2 */
+/* Hero Section V2 - Deep Blue Premium */
 .hero-section-v2 {
     position: relative;
-    padding: 120px 0 160px;
-    background: radial-gradient(circle at top right, #f0f7ff 0%, #ffffff 100%);
+    padding: 140px 0 180px;
+    background-color: var(--primary);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(0, 68, 148, 0.8) 0, transparent 50%), 
+        radial-gradient(at 100% 0%, rgba(0, 123, 255, 0.4) 0, transparent 50%);
+    color: white;
     overflow: hidden;
 }
 
 .hero-section-v2::before {
     content: '';
     position: absolute;
-    top: -10%;
-    right: -5%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(0, 86, 179, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+    bottom: -10%;
+    left: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
     border-radius: 50%;
     z-index: 0;
 }
 
 .hero-eyebrow {
     display: inline-block;
-    padding: 6px 16px;
-    background: var(--primary-soft);
-    color: var(--primary);
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 100px;
     font-size: 12px;
     font-weight: 600;
@@ -78,9 +84,7 @@ body {
     line-height: 1.1;
     font-weight: 700;
     margin-bottom: 24px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: white;
 }
 
 @media (max-width: 768px) {
@@ -89,19 +93,19 @@ body {
 
 .hero-lead {
     font-size: 1.25rem;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.85);
     max-width: 540px;
     line-height: 1.6;
     margin-bottom: 40px;
 }
 
-/* Double-Bezel Button */
+/* Double-Bezel Button - White Version */
 .btn-premium {
     position: relative;
     display: inline-flex;
     align-items: center;
     padding: 4px;
-    background: rgba(0, 86, 179, 0.1);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 100px;
     text-decoration: none;
     transition: var(--transition-heavy);
@@ -110,30 +114,26 @@ body {
 .btn-premium-inner {
     display: flex;
     align-items: center;
-    padding: 12px 32px;
-    background: var(--primary);
-    color: white !important;
+    padding: 14px 36px;
+    background: white;
+    color: var(--primary) !important;
     border-radius: 100px;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 16px;
-    box-shadow: 0 10px 20px rgba(0, 86, 179, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     transition: var(--transition-heavy);
 }
 
 .btn-premium:hover .btn-premium-inner {
-    transform: translateY(-2px);
-    background: var(--accent);
-    box-shadow: 0 15px 30px rgba(0, 86, 179, 0.3);
-}
-
-.btn-premium:active {
-    transform: scale(0.98);
+    transform: translateY(-3px);
+    background: #f8f9fa;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .btn-icon-wrapper {
     width: 32px;
     height: 32px;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--primary-soft);
     border-radius: 50%;
     display: flex;
     align-items: center;
