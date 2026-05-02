@@ -38,46 +38,110 @@ export default function Home() {
 
   return (
     <div>
-      {/* Hero Section */}
-      <section className="hero-section">
+      {/* Hero Section V2 */}
+      <section className="hero-section-v2">
         <div className="container">
-          <h2 className="welcome-text mb-2">Welcome Here</h2>
-          <h1 className="display-4 fw-bold">Travel with Ease</h1>
-          <p className="lead"><span className="hassle-text">Hassle</span>-free Visa Processing & Bank Solvency Support for Any Country.</p>
-          <Link href="/services" className="btn btn-light btn-lg mt-3">Explore Services</Link>
+          <div className="row align-items-center">
+            <div className="col-lg-6 mb-5 mb-lg-0 text-start">
+              <span className="hero-eyebrow fade-up">Trusted Travel Partner</span>
+              <h1 className="hero-title fade-up delay-100">
+                Travel with <br />
+                <span style={{ fontStyle: 'italic' }}>Ease & Confidence</span>
+              </h1>
+              <p className="hero-lead fade-up delay-200">
+                Premium Visa Processing and Bank Solvency support tailored for your global journey. Experience hassle-free documentation with our expert team.
+              </p>
+              <div className="fade-up delay-300">
+                <Link href="/services" className="btn-premium">
+                  <span className="btn-premium-inner">
+                    Explore Our Services
+                    <span className="btn-icon-wrapper">
+                      <i className="fas fa-arrow-right"></i>
+                    </span>
+                  </span>
+                </Link>
+              </div>
+            </div>
+            
+            <div className="col-lg-6">
+              <div className="hero-visual fade-up delay-200">
+                <div className="visual-card">
+                  <img 
+                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000&auto=format&fit=crop" 
+                    alt="Travel Hero" 
+                    className="img-fluid rounded-4 shadow-sm"
+                    style={{ width: '100%', height: '400px', objectFit: 'cover' }}
+                  />
+                  
+                  {/* Floating Badges */}
+                  <div className="floating-badge badge-1">
+                    <div className="icon bg-primary-soft p-2 rounded-circle">
+                      <i className="fas fa-passport text-primary"></i>
+                    </div>
+                    <div>
+                      <div className="fw-bold small">Global Access</div>
+                      <div className="text-muted smallest" style={{ fontSize: '10px' }}>150+ Countries</div>
+                    </div>
+                  </div>
+                  
+                  <div className="floating-badge badge-2">
+                    <div className="icon bg-success-soft p-2 rounded-circle" style={{ background: '#e6fffa' }}>
+                      <i className="fas fa-check-circle text-success"></i>
+                    </div>
+                    <div>
+                      <div className="fw-bold small">High Success Rate</div>
+                      <div className="text-muted smallest" style={{ fontSize: '10px' }}>Verified Support</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="container my-5">
+      <section className="container my-5 py-5">
         <div className="row text-center">
           <div className="col-md-4 mb-4">
-            <div className="card h-100 shadow-sm border-primary">
+            <div className="card h-100 shadow-sm border-0 p-4" style={{ borderRadius: '24px', background: '#f8faff' }}>
               <div className="card-body">
-                <i className="fas fa-passport fa-3x text-primary mb-3"></i>
-                <h3 className="card-title">Visa Processing</h3>
-                <p className="card-text">Work, Student, and Medical visas for any country worldwide.</p>
-                <Link href="/services" className="btn btn-outline-primary">Learn More</Link>
+                <div className="bg-white shadow-sm p-3 rounded-circle d-inline-block mb-4">
+                  <i className="fas fa-passport fa-2x text-primary"></i>
+                </div>
+                <h3 className="card-title h4 fw-bold">Visa Processing</h3>
+                <p className="card-text text-muted">Work, Student, and Medical visas for any country worldwide.</p>
+                <Link href="/services" className="btn btn-link text-primary text-decoration-none fw-bold mt-2">
+                  Learn More <i className="fas fa-chevron-right small ms-1"></i>
+                </Link>
               </div>
             </div>
           </div>
           <div className="col-md-4 mb-4">
-            <div className="card h-100 shadow-sm border-primary">
+            <div className="card h-100 shadow-sm border-0 p-4" style={{ borderRadius: '24px', background: '#f8faff' }}>
               <div className="card-body">
-                <i className="fas fa-money-check-alt fa-3x text-primary mb-3"></i>
-                <h3 className="card-title">Bank Solvency</h3>
-                <p className="card-text">Bank solvency support for any required amount to secure your visa.</p>
-                <Link href="/solvency" className="btn btn-outline-primary">Learn More</Link>
+                <div className="bg-white shadow-sm p-3 rounded-circle d-inline-block mb-4">
+                  <i className="fas fa-money-check-alt fa-2x text-primary"></i>
+                </div>
+                <h3 className="card-title h4 fw-bold">Bank Solvency</h3>
+                <p className="card-text text-muted">Bank solvency support for any required amount to secure your visa.</p>
+                <Link href="/solvency" className="btn btn-link text-primary text-decoration-none fw-bold mt-2">
+                  Learn More <i className="fas fa-chevron-right small ms-1"></i>
+                </Link>
               </div>
             </div>
           </div>
           <div className="col-md-4 mb-4">
-            <div className="card h-100 shadow-sm border-primary">
+            <div className="card h-100 shadow-sm border-0 p-4" style={{ borderRadius: '24px', background: '#f8faff' }}>
               <div className="card-body">
-                <i className="fas fa-headset fa-3x text-primary mb-3"></i>
-                <h3 className="card-title">24/7 Support</h3>
-                <p className="card-text">Live chat and dedicated support team ready to assist you anytime.</p>
-                <Link href="/contact" className="btn btn-outline-primary">Contact Us</Link>
+                <div className="bg-white shadow-sm p-3 rounded-circle d-inline-block mb-4">
+                  <i className="fas fa-headset fa-2x text-primary"></i>
+                </div>
+                <h3 className="card-title h4 fw-bold">24/7 Support</h3>
+                <p className="card-text text-muted">Live chat and dedicated support team ready to assist you anytime.</p>
+                <Link href="/contact" className="btn btn-link text-primary text-decoration-none fw-bold mt-2">
+                  Contact Us <i className="fas fa-chevron-right small ms-1"></i>
+                </Link>
               </div>
             </div>
           </div>
@@ -85,8 +149,8 @@ export default function Home() {
       </section>
 
       {/* Visa Success Gallery */}
-      <section className="container my-5">
-        <h2 className="text-center text-primary mb-4">Our Success Stories</h2>
+      <section className="container my-5 py-5">
+        <h2 className="text-center text-primary mb-5 fw-bold">Our Success Stories</h2>
         <div className="row" id="visa-gallery">
           {loading ? (
             <div className="col-12 text-center">
@@ -97,10 +161,10 @@ export default function Home() {
           ) : stories.length > 0 ? (
             stories.map(story => (
               <div key={story.id} className="col-md-4 mb-4">
-                <div className="card h-100 shadow-sm border-0" style={{ borderRadius: '12px', overflow: 'hidden' }}>
-                  <img src={story.imageUrl} className="card-img-top" alt="Visa Success" style={{ height: '250px', objectFit: 'cover' }} />
-                  <div className="card-body p-2 text-center">
-                    <span className="badge bg-primary px-3 py-2 rounded-pill">{story.caption}</span>
+                <div className="card h-100 shadow-sm border-0" style={{ borderRadius: '20px', overflow: 'hidden' }}>
+                  <img src={story.imageUrl} className="card-img-top" alt="Visa Success" style={{ height: '300px', objectFit: 'cover' }} />
+                  <div className="card-body p-3 text-center">
+                    <span className="badge bg-primary px-3 py-2 rounded-pill" style={{ fontWeight: '500' }}>{story.caption}</span>
                   </div>
                 </div>
               </div>
