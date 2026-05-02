@@ -75,7 +75,7 @@ export default function Home() {
                   
                   {/* Floating Badges */}
                   <div className="floating-badge badge-1">
-                    <div className="icon bg-primary-soft p-2 rounded-circle">
+                    <div className="icon bg-primary-soft p-2 rounded-circle" style={{ background: '#eef6ff' }}>
                       <i className="fas fa-passport text-primary"></i>
                     </div>
                     <div>
