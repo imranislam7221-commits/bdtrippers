@@ -40,27 +40,48 @@ export default function AdminUpload() {
     }
 
     setUploading(true);
-    setStatus({ type: "info", message: "Uploading photo... Please wait." });
+    setStatus({ type: "info", message: "Step 1/4: Checking connection..." });
+
+    // Hard timeout for mobile safety
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      setStatus({ type: "danger", message: "Timeout: Upload took too long (>60s). Please check your internet or Firebase console." });
+      setUploading(false);
+    }, 60000);
 
     try {
+      // Step 1: Check Auth
+      if (!auth.currentUser) {
+        setStatus({ type: "info", message: "Re-authenticating..." });
+        await signInAnonymously(auth);
+      }
+
+      // Step 2: Storage Ref
+      setStatus({ type: "info", message: "Step 2/4: Preparing file..." });
       const uniqueName = `stories/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, uniqueName);
       
+      // Step 3: Actual Upload
+      setStatus({ type: "info", message: "Step 3/4: Sending photo to Firebase (this may take time)..." });
       const snapshot = await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(snapshot.ref);
 
+      // Step 4: Database Write
+      setStatus({ type: "info", message: "Step 4/4: Finalizing and saving to website..." });
       await addDoc(collection(db, 'success_stories'), {
         imageUrl: downloadURL,
         caption: caption,
         createdAt: serverTimestamp()
       });
 
-      setStatus({ type: "success", message: "Photo uploaded and live successfully!" });
+      clearTimeout(timeoutId);
+      setStatus({ type: "success", message: "Success! Photo is now live on the website." });
       setFile(null);
       setCaption("");
     } catch (error: any) {
+      clearTimeout(timeoutId);
       console.error("Upload Error:", error);
-      setStatus({ type: "danger", message: `Upload Failed: ${error.message}` });
+      setStatus({ type: "danger", message: `Upload Failed: ${error.message}. Please check if Storage Rules are 'if true'.` });
     } finally {
       setUploading(false);
     }
