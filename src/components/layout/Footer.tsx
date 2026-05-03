@@ -38,18 +38,18 @@ export default function Footer() {
             </div>
             <div className="col-md-4 mb-3">
               <h5>Follow Us</h5>
-              <div className="social-icons d-flex flex-column align-items-center align-items-md-start">
-                <a href="https://www.facebook.com/bdtrippersltd" target="_blank" rel="noopener noreferrer" className="text-decoration-none mb-2">
-                  <i className="fab fa-facebook me-2" style={{ width: '20px' }}></i> <span className="small">BD Trippers</span>
+              <div className="social-icons d-inline-flex flex-column align-items-start text-start">
+                <a href="https://www.facebook.com/bdtrippersltd" target="_blank" rel="noopener noreferrer" className="text-decoration-none">
+                  <i className="fab fa-facebook me-2" style={{ width: '24px', textAlign: 'center' }}></i> <span className="small">BD Trippers</span>
                 </a>
-                <a href="https://www.facebook.com/share/18HxJeEAZV/" target="_blank" rel="noopener noreferrer" className="text-decoration-none mb-2">
-                  <i className="fab fa-facebook me-2" style={{ width: '20px' }}></i> <span className="small">Bank Solvency Support</span>
+                <a href="https://www.facebook.com/share/18HxJeEAZV/" target="_blank" rel="noopener noreferrer" className="text-decoration-none">
+                  <i className="fab fa-facebook me-2" style={{ width: '24px', textAlign: 'center' }}></i> <span className="small">Bank Solvency Support</span>
                 </a>
-                <a href="https://wa.me/8801735182024" target="_blank" rel="noopener noreferrer" className="text-decoration-none mb-2">
-                  <i className="fab fa-whatsapp me-2" style={{ width: '20px' }}></i> <span className="small">WhatsApp Support</span>
+                <a href="https://wa.me/8801735182024" target="_blank" rel="noopener noreferrer" className="text-decoration-none">
+                  <i className="fab fa-whatsapp me-2" style={{ width: '24px', textAlign: 'center' }}></i> <span className="small">WhatsApp Support</span>
                 </a>
                 <a href="#" className="text-decoration-none">
-                  <i className="fab fa-instagram me-2" style={{ width: '20px' }}></i> <span className="small">Instagram</span>
+                  <i className="fab fa-instagram me-2" style={{ width: '24px', textAlign: 'center' }}></i> <span className="small">Instagram Page</span>
                 </a>
               </div>
             </div>
