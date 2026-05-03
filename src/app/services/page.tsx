@@ -60,7 +60,7 @@ export default function Services() {
         <div className="col-md-6 text-center">
           <div className="p-5 bg-light rounded border border-primary">
             <h4>Medical Hubs</h4>
-            <p>India, Singapore, Thailand, USA, UK, and more.</p>
+            <p>India, Singapore, Thailand, USA, UK, Asia, and more.</p>
           </div>
         </div>
       </div>
