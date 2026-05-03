@@ -93,10 +93,6 @@ export default function Home() {
                           className="d-block w-100 h-100"
                           style={{ objectFit: 'cover' }}
                         />
-                        <div className="carousel-caption" style={{ background: 'rgba(0,86,179,0.6)', backdropFilter: 'blur(5px)', borderRadius: '15px', padding: '10px 20px', bottom: '20px', left: '10%', right: '10%' }}>
-                          <h5 className="mb-0 fw-bold">{slide.title}</h5>
-                          <p className="small mb-0 opacity-75">{slide.description}</p>
-                        </div>
                       </div>
                     ))}
                   </div>
