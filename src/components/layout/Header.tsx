@@ -146,6 +146,7 @@ export default function Header() {
           <i className="fa-solid fa-ellipsis-vertical fs-2"></i>
         </button>
       </div>
-    </>
-  );
+    </nav>
+  </>
+);
 }
