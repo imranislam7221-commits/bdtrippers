@@ -172,23 +172,23 @@ body {
 .floating-badge {
     position: absolute;
     background: white;
-    padding: 12px 20px;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    padding: 8px 16px;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
-    gap: 12px;
-    z-index: 2;
+    gap: 10px;
+    z-index: 10;
     animation: float 6s ease-in-out infinite;
 }
 
 @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+    50% { transform: translateY(-15px); }
 }
 
-.badge-1 { top: 10%; left: -10%; animation-delay: 0s; }
-.badge-2 { bottom: 15%; right: -5%; animation-delay: 1s; }
+.badge-1 { top: 15%; left: -40px; animation-delay: 0s; }
+.badge-2 { bottom: 20%; right: -30px; animation-delay: 1s; }
 
 /* Rest of the original styles (for compatibility) */
 h1, h2, h3, h4, h5, h6, .display-4 {
