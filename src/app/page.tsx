@@ -100,22 +100,22 @@ export default function Home() {
 
                 {/* Floating Badges (Moved outside to prevent clipping) */}
                 <div className="floating-badge badge-1">
-                  <div className="icon bg-primary-soft rounded-circle flex-shrink-0" style={{ background: '#eef6ff', width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <i className="fas fa-passport text-primary" style={{ fontSize: '13px' }}></i>
+                  <div style={{ background: '#eef6ff', width: '26px', height: '26px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <i className="fas fa-passport text-primary" style={{ fontSize: '11px', margin: 0 }}></i>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', lineHeight: '1' }}>
-                    <span style={{ fontWeight: '700', fontSize: '12px', color: '#1a1a1a', marginBottom: '2px', display: 'block' }}>Global Access</span>
-                    <span style={{ fontSize: '9px', color: '#666', display: 'block' }}>150+ Countries</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '0', margin: 0, padding: 0 }}>
+                    <span style={{ fontWeight: '700', fontSize: '11px', color: '#1a1a1a', lineHeight: '1.1', margin: 0, padding: 0 }}>Global Access</span>
+                    <span style={{ fontSize: '8.5px', color: '#666', lineHeight: '1.1', margin: 0, padding: 0 }}>150+ Countries</span>
                   </div>
                 </div>
                 
                 <div className="floating-badge badge-2">
-                  <div className="icon bg-success-soft rounded-circle flex-shrink-0" style={{ background: '#e6fffa', width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <i className="fas fa-check-circle text-success" style={{ fontSize: '13px' }}></i>
+                  <div style={{ background: '#e6fffa', width: '26px', height: '26px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <i className="fas fa-check-circle text-success" style={{ fontSize: '11px', margin: 0 }}></i>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', lineHeight: '1' }}>
-                    <span style={{ fontWeight: '700', fontSize: '12px', color: '#1a1a1a', marginBottom: '2px', display: 'block' }}>High Success Rate</span>
-                    <span style={{ fontSize: '9px', color: '#666', display: 'block' }}>Verified Support</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '0', margin: 0, padding: 0 }}>
+                    <span style={{ fontWeight: '700', fontSize: '11px', color: '#1a1a1a', lineHeight: '1.1', margin: 0, padding: 0 }}>High Success Rate</span>
+                    <span style={{ fontSize: '8.5px', color: '#666', lineHeight: '1.1', margin: 0, padding: 0 }}>Verified Support</span>
                   </div>
                 </div>
               </div>
