@@ -200,6 +200,26 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      {/* Office Location Section */}
+      <section className="bg-light py-5">
+        <div className="container text-center">
+          <h2 className="text-primary mb-4 fw-bold">Visit Our Office</h2>
+          <div className="card shadow-sm border-0 mx-auto" style={{ maxWidth: '800px', borderRadius: '24px' }}>
+            <div className="card-body p-4">
+              <div className="row align-items-center">
+                <div className="col-md-2 text-primary mb-3 mb-md-0">
+                  <i className="fas fa-map-marked-alt fa-3x"></i>
+                </div>
+                <div className="col-md-10 text-md-start">
+                  <h5 className="fw-bold mb-2">Main Office Address</h5>
+                  <p className="mb-0 fs-5">10/2, Gawsia Kashem Center (4th floor), Arambagh Culvert Road, Motijheel, Dhaka-1000, Bangladesh</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
