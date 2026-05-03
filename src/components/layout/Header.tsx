@@ -76,8 +76,8 @@ export default function Header() {
           </ul>
         </div>
 
-        {/* Login System (Back to right, with a gap from the 3-dot menu) */}
-        <div className="d-flex align-items-center ms-auto me-3 me-lg-0 order-lg-3" id="auth-btn-container">
+        {/* Login System (Back to right, with a larger gap from the 3-dot menu) */}
+        <div className="d-flex align-items-center ms-auto me-4 me-md-5 order-lg-3" id="auth-btn-container">
           {user ? (
             <div className={`dropdown ${isDropdownOpen ? 'show' : ''}`}>
               <button 
