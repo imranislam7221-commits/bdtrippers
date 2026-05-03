@@ -38,10 +38,17 @@ export default function Footer() {
             </div>
             <div className="col-md-4 mb-3">
               <h5>Follow Us</h5>
-              <div className="social-icons">
-                <a href="https://www.facebook.com/bdtrippersltd" target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook"></i></a>
-                <a href="#"><i className="fab fa-instagram"></i></a>
-                <a href="https://wa.me/8801735182024" target="_blank" rel="noopener noreferrer"><i className="fab fa-whatsapp"></i></a>
+              <div className="social-icons d-flex flex-column align-items-center align-items-md-start">
+                <a href="https://www.facebook.com/bdtrippersltd" target="_blank" rel="noopener noreferrer" className="text-decoration-none mb-2">
+                  <i className="fab fa-facebook me-2"></i> <span className="small">BD Trippers</span>
+                </a>
+                <a href="https://www.facebook.com/share/18HxJeEAZV/" target="_blank" rel="noopener noreferrer" className="text-decoration-none mb-2">
+                  <i className="fab fa-facebook me-2"></i> <span className="small">Bank Solvency Support</span>
+                </a>
+                <div className="mt-1">
+                  <a href="#"><i className="fab fa-instagram"></i></a>
+                  <a href="https://wa.me/8801735182024" target="_blank" rel="noopener noreferrer" className="ms-3"><i className="fab fa-whatsapp"></i></a>
+                </div>
               </div>
             </div>
           </div>
