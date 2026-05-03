@@ -58,11 +58,6 @@ export default function Footer() {
           <p className="mb-0">&copy; {new Date().getFullYear()} BD TRIPPER. All Rights Reserved.</p>
         </div>
       </footer>
-
-      {/* Floating WhatsApp Button */}
-      <a href="https://wa.me/8801735182024" className="whatsapp-float" target="_blank" rel="noopener noreferrer">
-        <i className="fab fa-whatsapp"></i>
-      </a>
     </>
   );
 }
