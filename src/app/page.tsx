@@ -134,7 +134,7 @@ export default function Home() {
                   <i className="fas fa-passport fa-2x text-primary"></i>
                 </div>
                 <h3 className="card-title h4 fw-bold">Visa Processing</h3>
-                <p className="card-text text-muted">Work, Student, and Medical visas for any country worldwide.</p>
+                <p className="card-text text-muted">Student, Work, and Medical visas for any country worldwide.</p>
                 <Link href="/services" className="btn btn-link text-primary text-decoration-none fw-bold mt-2">
                   Learn More <i className="fas fa-chevron-right small ms-1"></i>
                 </Link>
