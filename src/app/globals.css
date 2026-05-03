@@ -172,28 +172,26 @@ body {
 .floating-badge {
     position: absolute;
     background: white;
-    padding: 4px 10px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 6px 14px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 6px !important;
+    gap: 10px !important;
     z-index: 100;
     animation: float 6s ease-in-out infinite;
     white-space: nowrap;
-    width: auto !important;
-    height: auto !important;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.03);
 }
 
 @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+    50% { transform: translateY(-10px); }
 }
 
-.badge-1 { top: 15%; left: -5px; animation-delay: 0s; }
-.badge-2 { bottom: 25%; right: -5px; animation-delay: 1s; }
+.badge-1 { top: 20%; left: 15px; animation-delay: 0s; }
+.badge-2 { bottom: 25%; right: 15px; animation-delay: 1s; }
 
 /* Rest of the original styles (for compatibility) */
 h1, h2, h3, h4, h5, h6, .display-4 {
