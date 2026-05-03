@@ -82,8 +82,9 @@ export default function AdminUpload() {
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card shadow border-0">
-            <div className="card-header bg-primary text-white text-center py-3">
-              <h5 className="m-0 fw-bold">Admin: Build 1002 ✅</h5>
+            <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+              <h5 className="m-0 fw-bold">Admin: Upload ✅</h5>
+              <Link href="/admin/manage" className="btn btn-sm btn-light fw-bold">Manage Stories</Link>
             </div>
             <div className="card-body p-4">
               {message && <div className={`alert alert-${msgType} small`}>{message}</div>}
