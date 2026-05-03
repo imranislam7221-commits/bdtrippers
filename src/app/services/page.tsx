@@ -19,7 +19,7 @@ export default function Services() {
         <div className="col-md-6 text-center">
           <div className="p-5 bg-light rounded border border-primary">
             <h4>Study Destinations</h4>
-            <p>Top universities in USA, UK, Canada, Australia, Germany, and more.</p>
+            <p>Top universities in USA, UK, Canada, Australia, Germany, Asia, and more.</p>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@ export default function Services() {
         <div className="col-md-6 order-md-1 text-center">
           <div className="p-5 bg-light rounded border border-primary">
             <h4>Supported Countries</h4>
-            <p>USA, Canada, UK, Australia, Europe (Schengen), Middle East, and more.</p>
+            <p>USA, Canada, UK, Australia, Europe (Schengen), Middle East, Asia, and more.</p>
           </div>
         </div>
       </div>
