@@ -26,7 +26,7 @@ export default function Footer() {
             <div className="col-md-4 mb-3">
               <h5>BD TRIPPER</h5>
               <p>Your trusted visa processing partner.</p>
-              <p className="small mb-0"><i className="fas fa-map-marker-alt me-1"></i> Motijheel, Dhaka</p>
+              <p className="small mb-0"><i className="fas fa-map-marker-alt me-1"></i> 10/2, Gawsia Kashem Center (4th floor), Arambagh Culvert Road, Motijheel, Dhaka-1000, Bangladesh</p>
               <p className="small mb-0"><i className="fas fa-phone me-1"></i> +880 1735-182024</p>
             </div>
             <div className="col-md-4 mb-3">
