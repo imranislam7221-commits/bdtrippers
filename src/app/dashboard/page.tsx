@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { auth, db, storage } from "@/lib/firebase";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, User, signOut } from "firebase/auth";
 import { collection, addDoc, query, where, orderBy, getDocs, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useRouter } from "next/navigation";
@@ -102,7 +102,6 @@ export default function Dashboard() {
         urls.push({ type: 'photo', url });
       }
 
-      // Save references to Firestore
       for (const item of urls) {
         await addDoc(collection(db, 'user_uploads'), {
           uid: user.uid,
@@ -115,7 +114,7 @@ export default function Dashboard() {
       }
 
       setUploadStatus("Upload successful!");
-      alert("Documents uploaded and saved successfully!");
+      alert("Documents uploaded successfully!");
     } catch (error: any) {
       console.error("Upload error:", error);
       setUploadStatus(`Error: ${error.message}`);
@@ -138,7 +137,7 @@ export default function Dashboard() {
         createdAt: serverTimestamp()
       });
 
-      alert("Booking submitted!");
+      alert("Booking submitted successfully!");
       setDestination("");
       setTravelDate("");
       loadBookings(user.uid);
@@ -150,101 +149,183 @@ export default function Dashboard() {
     }
   };
 
-  if (loading) return <div className="container mt-5 text-center">Loading...</div>;
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/");
+  };
+
+  if (loading) return (
+    <div className="container mt-5 text-center py-5">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  );
+  
   if (!user) return null;
 
   return (
-    <div className="container my-5">
-      <div className="row">
-        <div className="col-md-4">
-          <div className="card shadow-sm mb-4">
-            <div className="card-body text-center">
-              {user.photoURL && (
-                <img src={user.photoURL} className="rounded-circle mb-3" width="100" alt={user.displayName || "User"} />
-              )}
-              <h3>{user.displayName}</h3>
-              <p className="text-muted">{user.email}</p>
-            </div>
+    <div className="container-fluid py-5 bg-light" style={{ minHeight: '90vh' }}>
+      <div className="container">
+        {/* Dashboard Header */}
+        <div className="d-flex justify-content-between align-items-center mb-5">
+          <div>
+            <h1 className="fw-bold mb-0">Welcome, {user.displayName?.split(' ')[0]}! 👋</h1>
+            <p className="text-muted">Manage your visa applications and documents.</p>
           </div>
+          <button onClick={handleLogout} className="btn btn-outline-danger rounded-pill px-4">
+            <i className="fas fa-sign-out-alt me-2"></i>Logout
+          </button>
         </div>
-        <div className="col-md-8">
-          <div className="card shadow-sm mb-4">
-            <div className="card-header bg-primary text-white">Upload Documents</div>
-            <div className="card-body">
-              <form onSubmit={handleUpload}>
-                <div className="mb-3">
-                  <label className="form-label">Passport Copy</label>
-                  <input type="file" id="passport-file" className="form-control" accept="image/*,.pdf" />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Personal Photo</label>
-                  <input type="file" id="photo-file" className="form-control" accept="image/*" />
-                </div>
-                <button type="submit" className="btn btn-primary">Upload All</button>
-                <div className="mt-2">{uploadStatus}</div>
-              </form>
-            </div>
-          </div>
 
-          <div className="card shadow-sm mb-4">
-            <div className="card-header bg-info text-white">New Booking</div>
-            <div className="card-body">
-              <div className="row g-3">
-                <div className="col-md-6">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Destination Country"
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                  />
+        <div className="row g-4">
+          {/* Sidebar / Profile Card */}
+          <div className="col-lg-4">
+            <div className="card shadow-sm border-0 text-center p-4 mb-4" style={{ borderRadius: '24px' }}>
+              <div className="position-relative d-inline-block mx-auto mb-3">
+                {user.photoURL ? (
+                  <img src={user.photoURL} className="rounded-circle border border-4 border-white shadow-sm" width="120" height="120" alt={user.displayName || "User"} style={{ objectFit: 'cover' }} />
+                ) : (
+                  <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto shadow-sm" style={{ width: '120px', height: '120px', fontSize: '40px' }}>
+                    {user.displayName?.charAt(0) || "U"}
+                  </div>
+                )}
+                <span className="position-absolute bottom-0 end-0 bg-success border border-2 border-white rounded-circle" style={{ width: '20px', height: '20px' }}></span>
+              </div>
+              <h3 className="fw-bold h4 mb-1">{user.displayName}</h3>
+              <p className="text-muted small mb-3">{user.email}</p>
+              <hr />
+              <div className="row text-center mt-3">
+                <div className="col-6">
+                  <div className="fw-bold text-primary">{bookings.length}</div>
+                  <div className="small text-muted">Bookings</div>
                 </div>
-                <div className="col-md-6">
-                  <input
-                    type="date"
-                    className="form-control"
-                    value={travelDate}
-                    onChange={(e) => setTravelDate(e.target.value)}
-                  />
-                </div>
-                <div className="col-12">
-                  <button
-                    onClick={createBooking}
-                    className="btn btn-info text-white w-100"
-                    disabled={bookingLoading}
-                  >
-                    {bookingLoading ? "Submitting..." : "Submit Booking"}
-                  </button>
+                <div className="col-6">
+                  <div className="fw-bold text-primary">0</div>
+                  <div className="small text-muted">Messages</div>
                 </div>
               </div>
             </div>
+
+            {/* Quick Actions */}
+            <div className="card shadow-sm border-0 p-4" style={{ borderRadius: '24px' }}>
+              <h5 className="fw-bold mb-3">Quick Actions</h5>
+              <Link href="/services" className="btn btn-light w-100 text-start mb-2 rounded-3 border">
+                <i className="fas fa-passport text-primary me-2"></i> Visa Requirements
+              </Link>
+              <Link href="/solvency" className="btn btn-light w-100 text-start rounded-3 border">
+                <i className="fas fa-calculator text-primary me-2"></i> Solvency Calculator
+              </Link>
+            </div>
           </div>
 
-          <div className="card shadow-sm">
-            <div className="card-header bg-success text-white">Booking Status</div>
-            <div className="card-body">
-              {bookings.length > 0 ? (
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Destination</th>
-                      <th>Date</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {bookings.map(booking => (
-                      <tr key={booking.id}>
-                        <td>{booking.destination}</td>
-                        <td>{booking.travelDate}</td>
-                        <td><span className="badge bg-warning text-dark">{booking.status}</span></td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <p className="text-muted">No bookings found.</p>
-              )}
+          {/* Main Content Area */}
+          <div className="col-lg-8">
+            <div className="row g-4">
+              {/* Document Upload */}
+              <div className="col-12">
+                <div className="card shadow-sm border-0 p-4" style={{ borderRadius: '24px' }}>
+                  <h5 className="fw-bold mb-4"><i className="fas fa-cloud-upload-alt text-primary me-2"></i>Upload Documents</h5>
+                  <form onSubmit={handleUpload}>
+                    <div className="row g-3">
+                      <div className="col-md-6">
+                        <label className="form-label small fw-bold text-muted text-uppercase">Passport Copy</label>
+                        <input type="file" id="passport-file" className="form-control" accept="image/*,.pdf" style={{ borderRadius: '12px' }} />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label small fw-bold text-muted text-uppercase">Personal Photo</label>
+                        <input type="file" id="photo-file" className="form-control" accept="image/*" style={{ borderRadius: '12px' }} />
+                      </div>
+                      <div className="col-12">
+                        <button type="submit" className="btn btn-primary px-4 py-2 rounded-pill shadow-sm">
+                          Upload Now
+                        </button>
+                        <span className="ms-3 text-info small fw-bold">{uploadStatus}</span>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              {/* New Booking Form */}
+              <div className="col-12">
+                <div className="card shadow-sm border-0 p-4" style={{ borderRadius: '24px' }}>
+                  <h5 className="fw-bold mb-4"><i className="fas fa-plus-circle text-primary me-2"></i>Start New Application</h5>
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label small fw-bold text-muted text-uppercase">Destination</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="e.g. United Kingdom"
+                        value={destination}
+                        onChange={(e) => setDestination(e.target.value)}
+                        style={{ borderRadius: '12px' }}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label small fw-bold text-muted text-uppercase">Expected Date</label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        value={travelDate}
+                        onChange={(e) => setTravelDate(e.target.value)}
+                        style={{ borderRadius: '12px' }}
+                      />
+                    </div>
+                    <div className="col-12">
+                      <button
+                        onClick={createBooking}
+                        className="btn btn-primary px-4 py-2 rounded-pill shadow-sm"
+                        disabled={bookingLoading}
+                      >
+                        {bookingLoading ? "Submitting..." : "Submit Application"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Booking List */}
+              <div className="col-12">
+                <div className="card shadow-sm border-0 p-4" style={{ borderRadius: '24px' }}>
+                  <h5 className="fw-bold mb-4"><i className="fas fa-list text-primary me-2"></i>Your Applications</h5>
+                  {bookings.length > 0 ? (
+                    <div className="table-responsive">
+                      <table className="table table-hover align-middle">
+                        <thead className="table-light">
+                          <tr>
+                            <th className="border-0" style={{ borderRadius: '12px 0 0 12px' }}>Destination</th>
+                            <th className="border-0">Applied Date</th>
+                            <th className="border-0" style={{ borderRadius: '0 12px 12px 0' }}>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {bookings.map(booking => (
+                            <tr key={booking.id}>
+                              <td className="fw-bold">{booking.destination}</td>
+                              <td className="text-muted">{booking.travelDate}</td>
+                              <td>
+                                <span className={`badge rounded-pill px-3 py-2 ${
+                                  booking.status === 'Pending' ? 'bg-warning text-dark' : 
+                                  booking.status === 'Approved' ? 'bg-success' : 'bg-info'
+                                }`}>
+                                  {booking.status}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="text-center py-4 text-muted">
+                      <i className="fas fa-folder-open fa-3x mb-3 opacity-25"></i>
+                      <p>You haven't submitted any applications yet.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
