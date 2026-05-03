@@ -6,6 +6,7 @@ import { onAuthStateChanged, User, signOut } from "firebase/auth";
 import { collection, addDoc, query, where, orderBy, getDocs, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Booking {
   id: string;
