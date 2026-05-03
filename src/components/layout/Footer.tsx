@@ -40,15 +40,17 @@ export default function Footer() {
               <h5>Follow Us</h5>
               <div className="social-icons d-flex flex-column align-items-center align-items-md-start">
                 <a href="https://www.facebook.com/bdtrippersltd" target="_blank" rel="noopener noreferrer" className="text-decoration-none mb-2">
-                  <i className="fab fa-facebook me-2"></i> <span className="small">BD Trippers</span>
+                  <i className="fab fa-facebook me-2" style={{ width: '20px' }}></i> <span className="small">BD Trippers</span>
                 </a>
                 <a href="https://www.facebook.com/share/18HxJeEAZV/" target="_blank" rel="noopener noreferrer" className="text-decoration-none mb-2">
-                  <i className="fab fa-facebook me-2"></i> <span className="small">Bank Solvency Support</span>
+                  <i className="fab fa-facebook me-2" style={{ width: '20px' }}></i> <span className="small">Bank Solvency Support</span>
                 </a>
-                <div className="mt-1">
-                  <a href="#"><i className="fab fa-instagram"></i></a>
-                  <a href="https://wa.me/8801735182024" target="_blank" rel="noopener noreferrer" className="ms-3"><i className="fab fa-whatsapp"></i></a>
-                </div>
+                <a href="https://wa.me/8801735182024" target="_blank" rel="noopener noreferrer" className="text-decoration-none mb-2">
+                  <i className="fab fa-whatsapp me-2" style={{ width: '20px' }}></i> <span className="small">WhatsApp Support</span>
+                </a>
+                <a href="#" className="text-decoration-none">
+                  <i className="fab fa-instagram me-2" style={{ width: '20px' }}></i> <span className="small">Instagram</span>
+                </a>
               </div>
             </div>
           </div>
