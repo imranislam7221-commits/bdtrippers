@@ -11,7 +11,7 @@ const ChatBot: React.FC = () => {
   const quickQuestions = [
     { q: "Visa Requirements", a: "We provide support for UK, USA, Canada, and more. What country are you interested in?" },
     { q: "Bank Solvency", a: "We provide verified bank solvency documents for any amount within 24-48 hours." },
-    { q: "Office Address", a: "Our office is at 10/2, Gawsia Kashem Center (4th floor), Motijheel, Dhaka." },
+    { q: "Office Address", a: "Our office is at 10/2, Gawsia Kashem Center (4th floor), Arambagh Culvert Road, Motijheel, Dhaka." },
     { q: "Talk to Agent", a: "Sure! Please click the WhatsApp button to chat with our expert directly." }
   ];
 
@@ -24,7 +24,12 @@ const ChatBot: React.FC = () => {
   };
 
   return (
-    <div style={{ position: 'fixed', bottom: '100px', right: '30px', zIndex: 1000 }}>
+    <div style={{ 
+      position: 'fixed', 
+      bottom: '180px', 
+      right: '30px', 
+      zIndex: 1000,
+    }}>
       {/* Chat Window */}
       {isOpen && (
         <div style={{
