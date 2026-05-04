@@ -26,7 +26,7 @@ const ChatBot: React.FC = () => {
   return (
     <div style={{ 
       position: 'fixed', 
-      bottom: '180px', 
+      bottom: '150px', 
       right: '30px', 
       zIndex: 1000,
     }}>
