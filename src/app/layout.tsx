@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BootstrapClient from "@/components/BootstrapClient";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import ChatBot from "@/components/ChatBot";
 
 const playfair = Playfair_Display({
   variable: "--font-heading",
@@ -39,6 +40,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <WhatsAppButton />
+        <ChatBot />
       </body>
     </html>
   );
