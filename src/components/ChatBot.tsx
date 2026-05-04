@@ -94,21 +94,23 @@ const ChatBot: React.FC = () => {
       <button 
         onClick={() => setIsOpen(!isOpen)}
         style={{
-          width: '60px',
-          height: '60px',
-          borderRadius: '50%',
+          padding: '10px 20px',
+          borderRadius: '30px',
           backgroundColor: '#007bff',
           color: '#fff',
           border: 'none',
           boxShadow: '0 4px 15px rgba(0,123,255,0.4)',
-          fontSize: '24px',
+          fontSize: '16px',
+          fontWeight: 'bold',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          minWidth: '120px'
         }}
       >
-        <i className={`fas ${isOpen ? 'fa-times' : 'fa-comment-dots'}`}></i>
+        {isOpen ? <i className="fas fa-times me-2"></i> : <i className="fas fa-comment-dots me-2"></i>}
+        {isOpen ? 'Close' : 'Live Chat'}
       </button>
     </div>
   );
