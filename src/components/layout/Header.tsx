@@ -51,21 +51,7 @@ export default function Header() {
 
   return (
     <>
-      {/* Top Info Bar */}
-      <div className="bg-primary text-white py-2 d-none d-lg-block">
-        <div className="container d-flex justify-content-between align-items-center">
-          <div className="small">
-            <i className="fas fa-map-marker-alt me-2"></i>
-            10/2, Gawsia Kashem Center (4th floor), Arambagh Culvert Road, Motijheel, Dhaka-1000, Bangladesh
-          </div>
-          <div className="small">
-            <i className="fas fa-phone-alt me-2"></i>
-            +880 1735-182024
-            <i className="fas fa-envelope ms-4 me-2"></i>
-            bdtrippers.info@gmail.com
-          </div>
-        </div>
-      </div>
+
 
       <nav className="navbar navbar-expand-lg custom-navbar sticky-top shadow-sm">
       <div className="container d-flex justify-content-between align-items-center">
